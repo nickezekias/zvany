@@ -1,2 +1,2 @@
 # Zvany
-An innovative panafrican ecommerce rest-api
+An innovative pan-african e-commerce rest-api
