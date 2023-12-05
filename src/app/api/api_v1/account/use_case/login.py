@@ -18,7 +18,7 @@ class Login(IUseCase):
         self.authenticator = authenticator
 
     async def execute(self, data: LoginRequest, access_token_expires: timedelta) -> dict | None:
-        user = self.repository.get_by_email(data.email)
+        user = self.repository.get_by_email(data.username)
         if not user:
             self.presenter.output_error_user_not_found()
 
