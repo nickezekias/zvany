@@ -31,5 +31,13 @@ services:
       MARIADB_USER: zvany
     expose:
       - 3306
+  mailhog:
+    image: mailhog/mailhog
+    container_name: 'mailhog'
+    logging:
+      driver: 'none' # disable saving logs
+    ports:
+     - "1025:1025"
+     - "8025:8025" 
 volumes:
   db-data:
