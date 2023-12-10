@@ -33,11 +33,10 @@ services:
       - 3306
   mailhog:
     image: mailhog/mailhog
-    container_name: 'mailhog'
     logging:
       driver: 'none' # disable saving logs
     ports:
-     - "1025:1025"
-     - "8025:8025" 
+      - 1025:1025 # smtp server port
+      - 8025:8025 # web ui
 volumes:
   db-data:
