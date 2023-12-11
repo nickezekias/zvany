@@ -3,10 +3,12 @@ from fastapi import HTTPException
 from src.domain.account.i_register_presenter import IRegisterPresenter
 from src.domain.account.user import User
 
+from src.app.core.adapter.presenter import Presenter
+
 from src.app.api.api_v1.account.adapter.presenter.account_json_mapper import AccountJsonMapper
 from src.app.api.api_v1.account.adapter.response.register_response import RegisterResponse
 
-class RegisterPresenter(IRegisterPresenter):
+class RegisterPresenter(Presenter, IRegisterPresenter):
 
     def output(self, user: User) -> RegisterResponse:
         user_res = AccountJsonMapper().mapFromDomain(user)

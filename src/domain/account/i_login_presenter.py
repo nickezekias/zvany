@@ -1,14 +1,7 @@
-from abc import ABC, abstractmethod
-from typing import TypeVar
+from abc import abstractmethod
+from src.domain.base.i_presenter import IPresenter
 
-I = TypeVar('I')
-O = TypeVar('O')
-
-class ILoginPresenter(ABC):
-    @abstractmethod
-    def output(self, data: I) -> O:
-        pass
-
+class ILoginPresenter(IPresenter):
     @abstractmethod
     def output_error_user_not_found(self) -> None:
         pass

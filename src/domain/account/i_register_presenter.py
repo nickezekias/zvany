@@ -1,10 +1,12 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import TypeVar
+
+from src.domain.base.i_presenter import IPresenter
 
 TUserEntity = TypeVar('TUserEntity')
 TRegisterResponse = TypeVar('TRegisterResponse')
 
-class IRegisterPresenter(ABC):
+class IRegisterPresenter(IPresenter):
 
     @abstractmethod
     def output(self, user: TUserEntity) -> TRegisterResponse:

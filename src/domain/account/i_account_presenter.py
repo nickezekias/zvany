@@ -1,7 +1,7 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+from src.domain.base.i_presenter import IPresenter
 
-
-class IAccountPresenter(ABC):
+class IAccountPresenter(IPresenter):
     #shared
     @abstractmethod
     def output_error_user_not_found(self) -> None:

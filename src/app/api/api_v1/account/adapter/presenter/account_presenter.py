@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
 
 from src.domain.account.i_account_presenter import IAccountPresenter
+from src.app.core.adapter.presenter import Presenter
 
-class AccountPresenter(IAccountPresenter):
+class AccountPresenter(Presenter, IAccountPresenter):
 
     def output_error_user_not_found(self) -> None:
         raise HTTPException(
