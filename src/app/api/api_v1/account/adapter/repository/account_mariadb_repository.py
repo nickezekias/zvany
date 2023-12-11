@@ -53,7 +53,9 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
 
     def get(self, id: int | str) -> User:
         orm: UserORM =  self.db.query(UserORM).get(id)
-        return self.mapper.mapToDomain(orm)
+        if orm:
+            return self.mapper.mapToDomain(orm)
+        return None
 
     def get_by_email(self, email: str) -> User | None:
         orm = self.db.query(UserORM).filter(UserORM.email == email).one_or_none()
