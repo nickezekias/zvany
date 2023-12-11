@@ -63,9 +63,8 @@ async def login(
     repository: IAccountRepository = Depends(get_account_mariadb_repository),
     authenticator=Depends(get_authenticator)
 ) -> dict | None:
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     controller = LoginController(repository, authenticator)
-    return await controller.login(form_data, access_token_expires)
+    return await controller.login(form_data)
 
 @router.post("/register", response_model=RegisterResponse, status_code=201)
 async def register(

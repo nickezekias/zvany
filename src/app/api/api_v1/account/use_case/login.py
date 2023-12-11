@@ -1,5 +1,5 @@
-from datetime import timedelta
 from src.domain.base.i_use_case import IUseCase
+from datetime import datetime
 from src.domain.account.i_authenticator import IAuthenticator
 from src.domain.account.i_account_repository import IAccountRepository
 from src.domain.account.i_login_presenter import ILoginPresenter
@@ -17,7 +17,7 @@ class Login(IUseCase):
         self.presenter = presenter
         self.authenticator = authenticator
 
-    async def execute(self, data: LoginRequest, access_token_expires: timedelta) -> dict | None:
+    async def execute(self, data: LoginRequest) -> dict | None:
         user = self.repository.get_by_email(data.username)
         if not user:
             self.presenter.output_error_user_not_found()
@@ -25,5 +25,8 @@ class Login(IUseCase):
         if not self.authenticator.verify_password(data.password, user.password):
             self.presenter.output_error_user_not_found()
 
-        token = self.authenticator.create_access_token({ "user_id":user.id }, expires_after=access_token_expires)
+        token = self.authenticator.create_access_token({"sub": user.id, "nbf": datetime.now()})
+        user.token = token
+        self.repository.update(user)
+        self.repository.commit()
         return self.presenter.output(LoginResponse(token=token, type="bearer"))
