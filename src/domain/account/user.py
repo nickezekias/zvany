@@ -69,3 +69,8 @@ class User(Entity):
                 
     def active(self) -> bool:
         return self.is_active
+    
+    def is_email_verified(self) -> bool:
+        if (self.email_verified_at != None):
+            return True
+        return False

@@ -27,8 +27,10 @@ class SendEmailVerificationLink(IUseCase):
         user = self.repository.get_by_email(email)
         if not user:
             return self.presenter.output_error_user_not_found()
-        elif not user.active():
+        if not user.active():
             return self.presenter.output_error_inactive_account()
+        if user.is_email_verified():
+            return self.presenter.output_error_email_already_verified()
         else:
             token = self.crypto.generate_token(
                 data={"nbf": datetime.utcnow(), "sub": user.id, "label": TokenLabels.VERIFY_EMAIL},
