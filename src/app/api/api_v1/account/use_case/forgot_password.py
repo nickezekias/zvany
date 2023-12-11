@@ -48,13 +48,11 @@ class ForgotPassword(IUseCase):
             used_at=None, ip_address=None,
             user_agent=None
         )
-        from loguru import logger
-        logger.warning(token)
         self.repository.add_pr_token(pr_token)
         try:
             self.repository.commit()
         except Exception as e:
-            self.presenter.output_error_invalid_token(error=str(e))
+            self.presenter.output_error_invalid_password_reset_token(error=str(e))
 
 
         # init and send  notification

@@ -53,22 +53,22 @@ class ResetPassword(IUseCase):
 
         token_payload = self.crypto.verify_token(payload.token)
         if not token_payload:
-            self.presenter.output_error_invalid_token()
+            self.presenter.output_error_invalid_password_reset_token()
 
         user_id = token_payload["sub"]
 
         if not token_payload["label"] == TokenLabels.RESET_PASSWORD and user_id:
-            self.presenter.output_error_invalid_token()
+            self.presenter.output_error_invalid_password_reset_token()
 
         if not user_id == user.id:
-            self.presenter.output_error_invalid_token()
+            self.presenter.output_error_invalid_password_reset_token()
             
         #verify token has not been used
         pr_token: PRToken = self.repository.get_pr_token(payload.token)
         if not pr_token:
-            self.presenter.output_error_invalid_token()
+            self.presenter.output_error_invalid_password_reset_token()
         if pr_token.is_used():
-            self.presenter.output_error_invalid_token("token.used")
+            self.presenter.output_error_invalid_password_reset_token("token.used")
 
         # update user
         password = self.authenticator.get_password_hash(payload.password)
@@ -82,7 +82,7 @@ class ResetPassword(IUseCase):
         try:
             self.repository.commit()
         except Exception as e:
-            self.presenter.output_error_invalid_token(str(e))
+            self.presenter.output_error_invalid_password_reset_token(str(e))
         return self.presenter.output_reset_password()
 
         
