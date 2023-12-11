@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from src.domain.account.i_register_presenter import IRegisterPresenter
 from src.domain.account.i_account_presenter import IAccountPresenter
@@ -63,7 +63,7 @@ class Register(IUseCase):
         user_input.is_active = True
 
         #create token
-        user_input.token = self.authenticator.create_access_token({"sub": str(user_input.email + user_input.id), "nbf": datetime.now()})
+        user_input.token = self.authenticator.create_access_token({"sub": user_input.id, "nbf": datetime.now()})
 
         # add user to DB
         self.account_repository.add(entity=user_input)
