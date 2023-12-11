@@ -30,6 +30,12 @@ class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
         )
 
     def mapFromDomain(self, param: User) -> UserPostResponse:
+        email_verified_at = param.email_verified_at
+        phone_verified_at = param.phone_verified_at
+        if (email_verified_at):
+            email_verified_at = DateTimeUtil.date_to_string(param.email_verified_at)
+        if (phone_verified_at):
+            phone_verified_at = DateTimeUtil.date_to_string(param.phone_verified_at)
         return UserPostResponse(
             id = param.id,
             avatar = param.avatar,
@@ -38,8 +44,8 @@ class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
             email = param.email,
             phone = param.phone,
             password = param.password,
-            email_verified_at = param.email_verified_at,
-            phone_verified_at = param.phone_verified_at,
+            email_verified_at = email_verified_at,
+            phone_verified_at = phone_verified_at,
             ID_document = param.ID_document,
             ID_document_verified_at = param.ID_document_verified_at,
             is_active = param.is_active,
