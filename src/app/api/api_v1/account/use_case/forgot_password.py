@@ -52,7 +52,7 @@ class ForgotPassword(IUseCase):
         try:
             self.repository.commit()
         except Exception as e:
-            self.presenter.output_error_invalid_password_reset_token(error=str(e))
+            self.presenter.output_server_error_db_commit(details=str(e))
 
 
         # init and send  notification

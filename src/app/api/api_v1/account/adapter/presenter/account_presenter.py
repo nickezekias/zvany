@@ -82,7 +82,7 @@ class AccountPresenter(Presenter, IAccountPresenter):
     def output_error_invalid_password_reset_token(self, error: str | None = None) -> dict:
         raise HTTPException(
             status_code=400,
-            detail={"message": "account.resetPassword.errors.invalidToken", "error": error }
+            detail={"message": "account.resetPassword.errors.invalidToken", "details": error }
         )
 
     def output_error_passwords_not_same(self) -> None:

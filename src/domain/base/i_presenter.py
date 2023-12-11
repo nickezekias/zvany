@@ -8,3 +8,7 @@ class IPresenter(ABC):
     @abstractmethod
     def output(self, data: I) -> O:
         pass
+
+    @abstractmethod
+    def output_server_error_db_commit(self, details: str | None ) -> None:
+        pass

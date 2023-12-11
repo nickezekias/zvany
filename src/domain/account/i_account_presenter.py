@@ -53,7 +53,7 @@ class IAccountPresenter(IPresenter):
 
     # reset password
     @abstractmethod
-    def output_error_invalid_password_reset_token(self) -> None:
+    def output_error_invalid_password_reset_token(self, details: str) -> None:
         pass
 
     @abstractmethod
