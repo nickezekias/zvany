@@ -1,4 +1,3 @@
-from typing import Annotated
 from fastapi import APIRouter, Depends
 
 from src.domain.account.i_account_repository import IAccountRepository
