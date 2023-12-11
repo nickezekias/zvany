@@ -8,6 +8,10 @@ class IAccountPresenter(ABC):
         pass
 
     @abstractmethod
+    def output_error_user_with_credentials_not_found(self) -> None:
+        pass
+
+    @abstractmethod
     def output_error_account_with_email_not_found(self) -> None:
         pass
 
@@ -17,6 +21,10 @@ class IAccountPresenter(ABC):
 
     @abstractmethod
     def output_error_email_already_verified(self) -> None:
+        pass
+
+    @abstractmethod
+    def output_error_invalid_auth_token(self) -> None:
         pass
 
 
@@ -45,7 +53,7 @@ class IAccountPresenter(ABC):
 
     # reset password
     @abstractmethod
-    def output_error_invalid_token(self) -> None:
+    def output_error_invalid_password_reset_token(self) -> None:
         pass
 
     @abstractmethod

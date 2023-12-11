@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 
 from src.domain.account.i_account_presenter import IAccountPresenter
 
@@ -9,6 +9,12 @@ class AccountPresenter(IAccountPresenter):
             status_code = 404,
             detail = "account.shared.errors.userNotFound"
         )
+
+    def output_error_user_with_credentials_not_found(self) -> None:
+        raise HTTPException(
+            status_code = status.HTTP_401_UNAUTHORIZED,
+            detail = "account.shared.errors.userWithCredentialsNotFound"
+        )
     
     def output_error_account_with_email_not_found(self) -> None:
         raise HTTPException(
@@ -18,8 +24,15 @@ class AccountPresenter(IAccountPresenter):
 
     def output_error_inactive_account(self) -> None:
         raise HTTPException(
-            status_code = 404,
+            status_code = status.HTTP_403_FORBIDDEN,
             detail = "account.shared.errors.inactiveAccount"
+        )
+
+
+    def output_error_invalid_auth_token(self) -> None:
+        raise HTTPException(
+            status_code = status.HTTP_401_UNAUTHORIZED,
+            detail = "account.shared.errors.invalidAuthToken"
         )
 
 
@@ -65,7 +78,7 @@ class AccountPresenter(IAccountPresenter):
         }
 
     # reset password
-    def output_error_invalid_token(self, error: str | None = None) -> dict:
+    def output_error_invalid_password_reset_token(self, error: str | None = None) -> dict:
         raise HTTPException(
             status_code=400,
             detail={"message": "account.resetPassword.errors.invalidToken", "error": error }
