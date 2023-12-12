@@ -17,7 +17,17 @@ class DateTimeUtil:
         return date.strftime(format)
 
     @staticmethod
-    def is_valid_date_string(date_string: str) -> bool:
+    def is_valid_date(date: datetime) -> bool:
+        try:
+            if not isinstance(date, datetime):
+                raise ValueError
+            else:
+                return True
+        except ValueError:
+            return False
+
+    @staticmethod
+    def is_valid_date_string(date_string: str, format: str = default_format) -> bool:
         try:
             date.fromisoformat(date_string)
             return True

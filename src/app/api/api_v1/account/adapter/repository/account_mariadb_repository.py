@@ -21,7 +21,7 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
     #[]FIXME: Find a way to handle this in a different class
     """ Add password reset token to db """
     def add_pr_token(self, data: PRToken) -> None:
-        from src.app.core.util.date_time_util import DateTimeUtil
+        from src.domain.util.date_time_util import DateTimeUtil
         pr_token_orm = PRTokenORM(
             id=data.id,
             email=data.email,
@@ -48,7 +48,7 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
                 ip_address=data["ip_address"],
                 user_agent=data["user_agent"]
             )
-        return res
+        return None
 
 
     def get(self, id: int | str) -> User:

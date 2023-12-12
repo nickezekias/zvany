@@ -6,7 +6,7 @@ from src.domain.account.user import User
 from src.app.api.api_v1.account.adapter.request.register_request import UserPostRequest
 from src.app.api.api_v1.account.adapter.response.user_response import UserPostResponse
 
-from src.app.core.util.date_time_util import DateTimeUtil
+from src.domain.util.date_time_util import DateTimeUtil
 
 class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
     def mapToDomain(self, param: UserPostRequest) -> User:

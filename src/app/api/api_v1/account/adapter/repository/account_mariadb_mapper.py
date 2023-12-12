@@ -1,5 +1,5 @@
 from datetime import datetime
-from src.app.core.util.date_time_util import DateTimeUtil
+from src.domain.util.date_time_util import DateTimeUtil
 
 from src.domain.base.mapper import Mapper
 from src.domain.account.user import User
