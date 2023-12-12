@@ -43,9 +43,10 @@ class VerifyEmail(IUseCase):
         if not user_id == user.id:
             self.presenter.output_error_invalid_email_verification_link()
         else:
+            self.repository.set_email_as_verified(user)
             try:
-                self.repository.set_email_as_verified(user)
                 self.repository.commit()
-            except:
-                pass
+            except Exception as e:
+                self.presenter.output_errors_sever_db_commit(str(e))
+
             return self.presenter.output_verify_email()

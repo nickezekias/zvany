@@ -28,5 +28,9 @@ class Login(IUseCase):
         token = self.authenticator.create_access_token({"sub": user.id, "nbf": datetime.now()})
         user.token = token
         self.repository.update(user)
-        self.repository.commit()
+        try:
+            self.repository.commit()
+        except Exception as e:
+            self.presenter.output_errors_sever_db_commit(str(e))
+
         return self.presenter.output(LoginResponse(token=token, type="bearer"))

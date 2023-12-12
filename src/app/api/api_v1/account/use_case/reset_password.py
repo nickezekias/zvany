@@ -82,7 +82,8 @@ class ResetPassword(IUseCase):
         try:
             self.repository.commit()
         except Exception as e:
-            self.presenter.output_error_invalid_password_reset_token(str(e))
+            self.presenter.output_errors_sever_db_commit(str(e))
+
         return self.presenter.output_reset_password()
 
         
