@@ -48,7 +48,7 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
                 ip_address=data["ip_address"],
                 user_agent=data["user_agent"]
             )
-        return None
+        return res
 
 
     def get(self, id: int | str) -> User:
