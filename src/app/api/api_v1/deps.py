@@ -26,7 +26,7 @@ def get_settings():
     return Settings()
 
 reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{app_settings.API_V1_STR}/login/access-token"
+    tokenUrl=f"{app_settings.API_V1_STR}/login"
 )
 account_presenter: IAccountPresenter = AccountPresenter()
 profile_presenter: IProfilePresenter = ProfilePresenter()

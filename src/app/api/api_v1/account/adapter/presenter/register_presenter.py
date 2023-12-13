@@ -17,25 +17,25 @@ class RegisterPresenter(Presenter, IRegisterPresenter):
             "token": user.token
         }
 
-    def output_errors_email_exists(self) -> None:
+    def output_error_email_exists(self) -> None:
         raise HTTPException(
             status_code=400,
             detail="account.register.errors.emailExists"
         )
     
-    def output_errors_phone_exists(self) -> None:
+    def output_error_phone_exists(self) -> None:
         raise HTTPException(
             status_code=400,
             detail="account.register.errors.phoneExists"
         )
     
-    def output_errors_user_data_duplicate(self) -> None:
+    def output_error_user_data_duplicate(self) -> None:
         raise HTTPException(
             status_code=400,
             detail="account.register.errors.userDataDuplicate"
         )
     
-    def output_errors_invalid_data(self) -> None:
+    def output_error_invalid_data(self) -> None:
         raise HTTPException(
             status_code=400,
             detail="account.register.errors.invalidData"

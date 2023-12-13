@@ -13,17 +13,17 @@ class IRegisterPresenter(IPresenter):
         pass
 
     @abstractmethod
-    def output_errors_email_exists(self) -> None:
+    def output_error_email_exists(self) -> None:
         pass
 
     @abstractmethod
-    def output_errors_phone_exists(self) -> None:
+    def output_error_phone_exists(self) -> None:
         pass
 
     @abstractmethod
-    def output_errors_user_data_duplicate(self) -> None:
+    def output_error_user_data_duplicate(self) -> None:
         pass
 
     @abstractmethod
-    def output_errors_invalid_data(self) -> None:
+    def output_error_invalid_data(self) -> None:
         pass

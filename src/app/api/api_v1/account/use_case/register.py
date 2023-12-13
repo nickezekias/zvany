@@ -57,12 +57,12 @@ class Register(IUseCase):
         # check no user with same email exists
         found_user: User = self.account_repository.get_by_email(email = user_input.email)
         if found_user:
-            return self.register_presenter.output_errors_email_exists()
+            return self.register_presenter.output_error_email_exists()
         
         # check no user with same phone exists
         found_user: User = self.account_repository.get_by_phone(phone = user_input.phone)
         if found_user:
-            return self.register_presenter.output_errors_phone_exists()
+            return self.register_presenter.output_error_phone_exists()
         
         #set user as active
         user_input.is_active = True
@@ -85,7 +85,7 @@ class Register(IUseCase):
             self.account_repository.commit()
             #hydrate object with saved user
         except Exception as e:
-            return self.register_presenter.output_errors_sever_db_commit(str(e))
+            return self.register_presenter.output_error_sever_db_commit(str(e))
         
         user: User = self.account_repository.get_by_email(user_input.email)
 
