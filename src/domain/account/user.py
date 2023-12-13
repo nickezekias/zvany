@@ -44,56 +44,38 @@ class User(Entity):
         self.id = id
         self.avatar = avatar
 
-        if not isinstance(first_name, str) and not len(first_name) >= 3:
-            raise ValueError("first_name must be str and have at least 3 characters")
-        else:
-            self.first_name = first_name
+        self.first_name = first_name
+        self.validate_first_name()
 
-        if not isinstance(last_name, str) and not len(last_name) >= 3:
-            raise ValueError("last_name must be str and have at least 3 characters")
-        else:
-            self.last_name = last_name
+        self.last_name = last_name
+        self.validate_last_name()
     
-        #TODO: Implement email validity verification algorithm
-        if not isinstance(email, str) and not email != "":
-            raise ValueError("email must be str")
-        else:
-            self.email = email
+        self.email = email
+        self.validate_email()
 
-        if not isinstance(phone, str) and not phone != "":
-            raise ValueError("phone must be a non-empty str")
-        else:
-            self.phone = phone
+        self.phone = phone
+        self.validate_phone()
 
-        if not isinstance(password, str) and not len(password) >= 8:
-            raise ValueError("password must be str and have at least 8 characters")
-        else:
-            self.password = password
+        
+        self.password = password
+        self.validate_password()
 
         self.token = token
 
-        if not email_verified_at == None and DateTimeUtil.is_valid_date(email_verified_at):
-            raise ValueError("email_verified_at must be 'None' or a valid date")
-        else:
-            self.email_verified_at = email_verified_at
+        self.email_verified_at = email_verified_at
+        self.validate_email_verified_at()
 
-        if not not phone_verified_at == None and not DateTimeUtil.is_valid_date(phone_verified_at):
-            raise ValueError("phone_verified_at must be 'None' or a valid date")
-        else:
-            self.phone_verified_at = phone_verified_at
+        self.phone_verified_at = phone_verified_at
+        self.validate_phone_verified_at()
 
         #TODO: Implement verification algorithm
         self.ID_document = ID_document
 
-        if not ID_document_verified_at == None and not DateTimeUtil.is_valid_date(ID_document_verified_at):
-            raise ValueError("ID_document_verified_at must be 'None' or a valid date")
-        else:
-            self.ID_document_verified_at = ID_document_verified_at
+        self.ID_document_verified_at = ID_document_verified_at
+        self.validate_ID_document_verified_at()
 
-        if not isinstance(is_active, bool):
-            raise ValueError("is_active must be a boolean")
-        else:
-            self.is_active = is_active
+        self.is_active = is_active
+        self.validate_is_active()
 
         self.created_at = created_at
         self.updated_at = updated_at
@@ -110,3 +92,55 @@ class User(Entity):
         if (self.email_verified_at != None):
             return True
         return False
+
+    def validate_first_name(self) -> None:
+        if not isinstance(self.first_name, str) or len(self.first_name) < 3:
+            self.errors.append({ "type": "str", "loc": "User, first_name", "msg": "Attribute must be str and have at least 3 characters", "input": self.first_name })
+
+    def validate_last_name(self) -> None:
+        if not isinstance(self.last_name, str) or not self.last_name or not len(self.last_name) >= 3:
+            self.errors.append({ "type": "str", "loc": "User, last_name", "msg": "Attribute must be str and have at least 3 characters", "input": self.last_name })
+
+    def validate_email(self) -> None:
+        #TODO: Implement email validity verification algorithm
+        if not isinstance(self.email, str) or not self.email:
+            self.errors.append({ "type": "str", "loc": "User, email", "msg": "Attribute must be non-empty str and a valid email", "input": self.email })
+
+    def validate_phone(self) -> None:
+        #TODO: Implement better validation for phone numbers
+        if not isinstance(self.phone, str) or not self.phone:
+            self.errors.append({ "type": "str", "loc": "User, phone", "msg": "Attribute must be non-empty str", "input": self.phone })
+
+    def validate_password(self) -> None:
+        if not isinstance(self.password, str) or not len(self.password) >= 8:
+            self.errors.append({ "type": "str", "loc": "User, password", "msg": "Attribute must be str and have at least 8 characters", "input": self.password })
+
+    def validate_email_verified_at(self) -> None:
+        if not self.email_verified_at == None and not DateTimeUtil.is_valid_date(self.email_verified_at):
+            self.errors.append({ "type": "datetime | None", "loc": "User, email_verified_at", "msg": "Attribute must be 'None' or a valid date", "input": self.email_verified_at })
+
+    def validate_phone_verified_at(self) -> None:
+        if not self.phone_verified_at == None and not DateTimeUtil.is_valid_date(self.phone_verified_at):
+            self.errors.append({ "type": "datetime | None", "loc": "User, phone_verified_at", "msg": "Attribute must be 'None' or a valid date", "input": self.phone_verified_at })
+
+    def validate_ID_document_verified_at(self) -> None:
+        if not self.ID_document_verified_at == None and not DateTimeUtil.is_valid_date(self.ID_document_verified_at):
+            self.errors.append({ "type": "datetime | None", "loc": "User, ID_document_verified_at", "msg": "Attribute must be 'None' or a valid date", "input": self.ID_document_verified_at })
+
+    def validate_is_active(self) -> None:
+        if not isinstance(self.is_active, bool):
+            self.errors.append({ "type": "bool", "loc": "User, is_active", "msg": "Attribute must be bool", "input": self.is_active })
+
+    def lazy_validation(self) -> None:
+        self.validate_first_name()
+        self.validate_last_name()
+        self.validate_email()
+        self.validate_phone()
+        self.validate_password()
+        self.validate_email_verified_at()
+        self.validate_phone_verified_at()
+        self.validate_ID_document_verified_at()
+        self.validate_is_active()
+        super().lazy_validation()
+
+

@@ -1,6 +1,7 @@
 from abc import ABC
 from typing import TypeVar
 from fastapi import HTTPException, status
+import json
 
 from src.domain.base.i_presenter import IPresenter
 I = TypeVar('I')
@@ -14,4 +15,10 @@ class Presenter(IPresenter):
     raise HTTPException(
       status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
       detail={ "message": "server.errors.db.couldNotCommitToDB", "details": details }
+    )
+  
+  def output_error_domain_validation(self, details: dict) -> None:
+    raise HTTPException(
+      status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+      detail=str(details)
     )

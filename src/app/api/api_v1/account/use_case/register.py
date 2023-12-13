@@ -45,7 +45,12 @@ class Register(IUseCase):
         # create user entity from form data
         user_req = form_data.user
         user_req.password = self.authenticator.get_password_hash(user_req.password) # hash user request password
-        user_input = self.account_json_mapper.mapToDomain(user_req)
+
+        try:
+            user_input: User = self.account_json_mapper.mapToDomain(user_req)
+        except ValueError as e:
+            self.register_presenter.output_error_domain_validation(e)
+
         user_input.is_active = False
 
 
@@ -64,6 +69,11 @@ class Register(IUseCase):
 
         #create token
         user_input.token = self.authenticator.create_access_token({"sub": user_input.id, "nbf": datetime.now()})
+
+        try:
+            user_input.lazy_validation()
+        except ValueError as e:
+            self.register_presenter.output_error_domain_validation(e)
 
         # add user to DB
         self.account_repository.add(entity=user_input)

@@ -12,3 +12,7 @@ class IPresenter(ABC):
     @abstractmethod
     def output_errors_sever_db_commit(self, details: str | None  = None) -> None:
         pass
+
+    @abstractmethod
+    def output_error_domain_validation(self, details: dict) -> None:
+        pass
