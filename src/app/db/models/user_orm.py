@@ -4,7 +4,8 @@ from src.app.db.base_class import Base
 
 
 class UserORM(Base):
-    __tablename__ = "users"
+    """ORM object for users table"""
+    __tablename__ = "users" # type: ignore
 
     id = Column(String(36), primary_key=True, index=True)
     avatar = Column(String, nullable=True)
@@ -18,11 +19,12 @@ class UserORM(Base):
     phone_verified_at = Column(DateTime, nullable=True)
     ID_document = Column(String, nullable=True)
     ID_document_verified_at = Column(DateTime, nullable=True)
-    is_active = Column(Boolean(), default=0, nullable=False)
+    is_active = Column(Boolean(), default=1, nullable=False)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)
 
     def asdict(self):
+        """Model dump"""
         return {
             "id": self.id,
             "avatar": self.avatar,

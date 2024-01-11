@@ -1,4 +1,3 @@
-from datetime import datetime
 from src.domain.util.date_time_util import DateTimeUtil
 
 from src.domain.base.mapper import Mapper
