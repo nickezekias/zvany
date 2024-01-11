@@ -1,3 +1,4 @@
+import json
 from src.domain.util.date_time_util import DateTimeUtil
 
 from src.domain.base.mapper import Mapper
@@ -33,7 +34,7 @@ class ProductMariaDBMapper(Mapper[ProductORM, Product]):
         upsells_ids: list[str] = list(str(param.upsells_ids).split(','))
         cross_sells_ids: list[str] = list(str(param.cross_sells_ids).split(','))
 
-        metadata= dict(param.metadata) # type: ignore - using a custom json as col type
+        metadata= json.loads(str(param.metadata))
         metadata_objects: list[ProductMetadata] = []
         for key, value in metadata.items():
             metadata_objects.append(ProductMetadata(id="", key=str(key), value=str(value)))
