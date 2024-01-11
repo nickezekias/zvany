@@ -141,6 +141,4 @@ class User(Entity):
         self.validate_phone_verified_at()
         self.validate_ID_document_verified_at()
         self.validate_is_active()
-        super().lazy_validation()
-
-
+        self.validate()
