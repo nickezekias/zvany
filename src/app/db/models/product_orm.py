@@ -1,0 +1,46 @@
+from sqlalchemy import Boolean, Column, DateTime, String, Integer
+
+from src.app.db.base_class import Base
+
+class ProductORM(Base):
+    """ORM object for products table - has 38 columns"""
+    __tablename__="products" # type: ignore  - something about Literal['products'] can't be assigned to declared_attr[Unknown]
+
+    id = Column(String(36), primary_key=True, index=True)
+    name = Column(String)
+    slug = Column(String, unique=True)
+    sku = Column(String, unique=True)
+    type = Column(String(30))
+    status = Column(String(30))
+    catalog_visibility = Column(String(30))
+    long_description = Column(String)
+    short_description = Column(String)
+    price = Column(String(15))
+    regular_price = Column(String(15))
+    sale_price = Column(String(15), nullable=True)
+    sale_start_date = Column(DateTime, nullable = True)
+    sale_end_date = Column(DateTime, nullable = True)
+    on_sale = Column(Boolean())
+    total_sales = Column(Integer)
+    virtual = Column(Boolean())
+    quantity = Column(Integer)
+    sold_individually = Column(Boolean())
+    weight = Column(String(30))
+    shipping_taxable = Column(Boolean())
+    reviews_allowed= Column(Boolean())
+    average_rating = Column(Integer)
+    rating_count = Column(Integer)
+    related_ids = Column(String, nullable=True)
+    upsells_ids = Column(String, nullable=True)
+    cross_sells_ids = Column(String, nullable=True)
+    parent_id = Column(String)
+    purchase_note = Column(String)
+    categories = Column(String)
+    tags = Column(String, nullable=True)
+    images = Column(String)
+    attributes = Column(String)
+    variations = Column(String, nullable=True)
+    menu_order = Column(Integer)
+    metadata = Column(String)
+    created_at = Column(DateTime)
+    updated_at = Column(DateTime)

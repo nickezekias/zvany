@@ -2,7 +2,8 @@ from typing import Generic, TypeVar
 from src.domain.base.i_repository import IRepository
 from src.domain.base.mapper import Mapper
 
-import sqlalchemy
+import sqlalchemy as sa
+from sqlalchemy.orm import Session
 from loguru import logger
 
 TEntity = TypeVar('TEntity')
@@ -11,10 +12,10 @@ DbContext = TypeVar('DbContext')
 TQuery = TypeVar('TQuery')
 
 class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
-    db: DbContext
+    db: Session
     mapper: Mapper
 
-    def __init__(self, db: DbContext, mapper: Mapper) -> None:
+    def __init__(self, db: Session, mapper: Mapper) -> None:
         self.db = db
         self.mapper = mapper
 
@@ -58,7 +59,7 @@ class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
     def commit(self) -> None:
         try:
             self.db.commit()
-        except sqlalchemy.exc.SQLAlchemyError as e:
+        except sa.exc.SQLAlchemyError as e:
             error = str(e.__dict__['orig'])
             logger.error(error)
             raise Exception(error)
