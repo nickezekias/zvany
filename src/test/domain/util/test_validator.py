@@ -14,12 +14,12 @@ def test_is_valid_datetime_err_payload_wrong_type():
 
 def test_is_datetime_gt_min():
     dt = now + timedelta(milliseconds=1)
-    res = Validator.is_datetime_gt_min(dt, now)
+    res = Validator.is_datetime_gte_min(dt, now)
     assert res is True
 
 def test_is_datetime_gt_min_err_payload_lt_min():
     dt = now - timedelta(milliseconds=1)
-    res = Validator.is_datetime_gt_min(dt, now)
+    res = Validator.is_datetime_gte_min(dt, now)
     assert res is False
 
 def test_is_non_empty_string():

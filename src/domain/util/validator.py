@@ -1,8 +1,8 @@
 from datetime import datetime
 from src.domain.util.date_time_util import DateTimeUtil
 
-class Validator:
 
+class Validator:
     @staticmethod
     def is_valid_datetime(value: datetime) -> bool:
         """Check value is valid datetime"""
@@ -11,9 +11,13 @@ class Validator:
         return False
 
     @staticmethod
-    def is_datetime_gt_min(value: datetime, min_value: datetime) -> bool:
+    def is_datetime_gte_min(value: datetime, min_value: datetime) -> bool:
         """Check is datetime with the right min"""
-        if Validator.is_valid_datetime(value) and value > min_value:
+        if (
+            Validator.is_valid_datetime(value)
+            and Validator.is_valid_datetime(min_value)
+            and value >= min_value
+        ):
             return True
         return False
 
@@ -31,7 +35,7 @@ class Validator:
             return True
         return False
 
-    @staticmethod    
+    @staticmethod
     def is_string_with_len_gte_min(value: str, min_value: int) -> bool:
         """Check value is str greater than or equal to min"""
         if Validator.is_string(value) and len(value) >= min_value:
@@ -60,9 +64,11 @@ class Validator:
         return False
 
     @staticmethod
-    def is_int_between_min_max(value: int, min_value: int,  max_value: int) -> bool:
+    def is_int_between_min_max(value: int, min_value: int, max_value: int) -> bool:
         """Checks if int has the right min and max"""
-        if Validator.is_int_gte_min(value, min_value) and Validator.is_int_lte_max(value, max_value):
+        if Validator.is_int_gte_min(value, min_value) and Validator.is_int_lte_max(
+            value, max_value
+        ):
             return True
         return False
 
