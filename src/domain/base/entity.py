@@ -23,9 +23,6 @@ class Entity(Abstract):
         if not self.id:
             self.id = uuid.uuid4().hex
 
-        # trigger attributes validation
-        self.validate()
-
     def validate(self) -> None:
         """Check if class' errors list is not empty then raise an error"""
         if len(self.errors) > 0:
@@ -58,6 +55,20 @@ class Entity(Abstract):
                     "type": "datetime",
                     "loc": f"{self.get_class_name()}, {attr_name}",
                     "msg": "attribute should be a valid datetime",
+                    "input": attr_value,
+                }
+            )
+            return False
+
+    def validate_is_datetime_gte_min(self, attr_name: str, attr_value: datetime, min_value: datetime):
+        if Validator.is_datetime_gte_min(attr_value, min_value):
+            return True
+        else:
+            self.errors.append(
+                {
+                    "type": "datetime",
+                    "loc": f"{self.get_class_name()}, {attr_name}",
+                    "msg": "attribute should be a valid datetime gte than min_value: ${min_value}",
                     "input": attr_value,
                 }
             )
@@ -161,5 +172,9 @@ class Entity(Abstract):
             )
             return False
 
+    # @abstractmethod
     def lazy_validation(self) -> None:
-        self.validate()
+        pass
+
+    def clear_validations(self):
+        self.errors = []
