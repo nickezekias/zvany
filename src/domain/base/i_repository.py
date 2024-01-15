@@ -12,7 +12,7 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def getAll(self) -> list[TEntity]:
+    def get_all(self) -> list[TEntity]:
         pass
 
     @abstractmethod

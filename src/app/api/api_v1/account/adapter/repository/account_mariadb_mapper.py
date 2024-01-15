@@ -4,7 +4,7 @@ from src.domain.base.mapper import Mapper
 from src.domain.account.user import User
 from src.app.db.models.user_orm import UserORM
 class AccountMariaDbMapper(Mapper[UserORM, User]):
-    def mapToDomain(self, param: UserORM) -> User:
+    def map_to_domain(self, param: UserORM) -> User:
         created_at = param.created_at
         if (isinstance(created_at, str)):
             created_at = DateTimeUtil.string_to_date(param.created_at),
@@ -31,13 +31,13 @@ class AccountMariaDbMapper(Mapper[UserORM, User]):
         return user
         
 
-    def mapToDomainList(self, params: list[UserORM]) -> list[UserORM]:
+    def map_to_domain_list(self, params: list[UserORM]) -> list[UserORM]:
         users: list[User]
         for param in params:
-            users.append(self.mapToDomain(param))
+            users.append(self.map_to_domain(param))
         return users
 
-    def mapFromDomain(self, param: User) -> UserORM:
+    def map_from_domain(self, param: User) -> UserORM:
         return UserORM(
             id=param.id,
             avatar=param.avatar,
@@ -56,8 +56,8 @@ class AccountMariaDbMapper(Mapper[UserORM, User]):
             updated_at = DateTimeUtil.date_to_string(param.updated_at)
         )
 
-    def mapFromDomainList(self, params: list[User]) -> list[UserORM]:
+    def map_from_domain_list(self, params: list[User]) -> list[UserORM]:
         orms: list[UserORM]
         for param in params:
-            orms.append(self.mapFromDomain(param))
+            orms.append(self.map_from_domain(param))
         return orms

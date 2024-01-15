@@ -30,7 +30,7 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
             used_at=data.used_at,
             ip_address=data.ip_address,
             user_agent=data.user_agent
-        )
+        ) # type: ignore
         self.db.add(pr_token_orm)
 
     #[]FIXME: Find a way to handle this in a different class
@@ -47,26 +47,26 @@ class AccountMariaDbRepository(Repository[UserORM, User], IAccountRepository):
                 used_at=data["used_at"],
                 ip_address=data["ip_address"],
                 user_agent=data["user_agent"]
-            )
+            ) # type: ignore
         return res
 
 
     def get(self, id: int | str) -> User:
         orm: UserORM =  self.db.query(UserORM).get(id)
         if orm:
-            return self.mapper.mapToDomain(orm)
+            return self.mapper.map_to_domain(orm)
         return None
 
     def get_by_email(self, email: str) -> User | None:
         orm = self.db.query(UserORM).filter(UserORM.email == email).one_or_none()
         if orm:
-            return self.mapper.mapToDomain(orm)
+            return self.mapper.map_to_domain(orm)
         return None
     
     def get_by_phone(self, phone: str) -> User | None:
         orm = self.db.query(UserORM).filter(UserORM.phone == phone).one_or_none()
         if orm:
-            return self.mapper.mapToDomain(orm)
+            return self.mapper.map_to_domain(orm)
         return None
 
     def update(self, user: User) -> User:

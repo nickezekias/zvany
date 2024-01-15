@@ -11,7 +11,7 @@ from src.app.api.api_v1.account.adapter.response.register_response import Regist
 class RegisterPresenter(Presenter, IRegisterPresenter):
 
     def output(self, user: User) -> RegisterResponse:
-        user_res = AccountJsonMapper().mapFromDomain(user)
+        user_res = AccountJsonMapper().map_from_domain(user)
         return {
             "user": user_res,
             "token": user.token

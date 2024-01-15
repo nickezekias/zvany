@@ -47,7 +47,7 @@ class Register(IUseCase):
         user_req.password = self.authenticator.get_password_hash(user_req.password) # hash user request password
 
         try:
-            user_input: User = self.account_json_mapper.mapToDomain(user_req)
+            user_input: User = self.account_json_mapper.map_to_domain(user_req)
         except ValueError as e:
             self.register_presenter.output_error_domain_validation(e)
 

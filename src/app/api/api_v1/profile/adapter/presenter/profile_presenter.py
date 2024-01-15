@@ -5,7 +5,7 @@ from src.app.core.adapter.presenter import Presenter
 
 class ProfilePresenter(Presenter, IProfilePresenter):
     def output_view_current_user(self, user: User) -> dict:
-        user_res = AccountJsonMapper().mapFromDomain(user)
+        user_res = AccountJsonMapper().map_from_domain(user)
         return {
             "user": user_res
         }

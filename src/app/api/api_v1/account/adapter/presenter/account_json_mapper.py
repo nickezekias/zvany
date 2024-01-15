@@ -9,7 +9,7 @@ from src.app.api.api_v1.account.adapter.response.user_response import UserPostRe
 from src.domain.util.date_time_util import DateTimeUtil
 
 class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
-    def mapToDomain(self, param: UserPostRequest) -> User:
+    def map_to_domain(self, param: UserPostRequest) -> User:
         now = datetime.now()
         return User(
             id = "",
@@ -29,7 +29,7 @@ class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
             updated_at = now,
         )
 
-    def mapFromDomain(self, param: User) -> UserPostResponse:
+    def map_from_domain(self, param: User) -> UserPostResponse:
         email_verified_at = param.email_verified_at
         phone_verified_at = param.phone_verified_at
         ID_document_verified_at = param.ID_document_verified_at
