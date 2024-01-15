@@ -41,6 +41,6 @@ class ProductORM(Base):
     attributes = Column(String)
     variations = Column(String, nullable=True)
     menu_order = Column(Integer)
-    metadata = Column(String)
+    product_metadata = Column("metadata", String)
     created_at = Column(DateTime)
     updated_at = Column(DateTime)

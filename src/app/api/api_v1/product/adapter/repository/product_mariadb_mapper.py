@@ -9,13 +9,10 @@ from src.domain.product.product_metadata import ProductMetadata
 from src.app.db.models.product_orm import ProductORM
 
 
-class ProductMariaDBMapper(Mapper[ProductORM, Product]):
-    class MapToDomainPayload:
-        attributes: list[ProductAttribute]
-        images: list[ProductImage]
+class ProductMariaDbMapper(Mapper[ProductORM, Product]):
 
-    def mapToDomain(
-        self, param: ProductORM, extra_payload: MapToDomainPayload
+    def map_to_domain(
+        self, param: ProductORM
     ) -> Product:
         created_at = param.created_at
         updated_at = param.updated_at
@@ -34,12 +31,10 @@ class ProductMariaDBMapper(Mapper[ProductORM, Product]):
         upsells_ids: list[str] = list(str(param.upsells_ids).split(','))
         cross_sells_ids: list[str] = list(str(param.cross_sells_ids).split(','))
 
-        metadata= json.loads(str(param.metadata))
+        metadata= json.loads(str(param.product_metadata))
         metadata_objects: list[ProductMetadata] = []
         for key, value in metadata.items():
             metadata_objects.append(ProductMetadata(id="", key=str(key), value=str(value)))
-
-
 
         return Product(
             id=str(param.id),
@@ -73,8 +68,8 @@ class ProductMariaDBMapper(Mapper[ProductORM, Product]):
             purchase_note=param.purchase_note,
             categories=param.categories,
             tags=param.tags,
-            images=extra_payload.images,
-            attributes=extra_payload.attributes,
+            images=[],
+            attributes=[],
             variations=param.variations,
             menu_order=param.menu_order,
             metadata=metadata_objects,
@@ -82,7 +77,13 @@ class ProductMariaDBMapper(Mapper[ProductORM, Product]):
             updated_at=param.updated_at,
         )
 
-    def mapFromDomain(self, param: Product) -> ProductORM:
+    def map_to_domain_list(self, params: list[ProductORM]) -> list[Product]:
+        products: list[Product] = []
+        for orm in params:
+            products.append(self.map_to_domain(orm))
+        return products
+
+    def map_from_domain(self, param: Product) -> ProductORM:
         sale_start_date = param.sale_start_date
         sale_end_date = param.sale_end_date
         if sale_start_date is not None:
@@ -139,7 +140,11 @@ class ProductMariaDBMapper(Mapper[ProductORM, Product]):
             attributes=attributes,
             variations=param.variations,
             menu_order=param.menu_order,
-            metadata=metadata,
+            product_metadata=metadata,
             created_at = DateTimeUtil.date_to_string(param.created_at),
             updated_at = DateTimeUtil.date_to_string(param.updated_at)
-        )
+        ) # type: ignore
+
+
+    def map_from_domain_list(self, params: list[Product]) -> list[ProductORM]:
+        return super().map_from_domain_list(params)

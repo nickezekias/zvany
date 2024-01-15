@@ -26,7 +26,7 @@ from src.app.api.api_v1.product.adapter.response.product_metadata_response impor
 
 
 class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse]):
-    def mapToDomain(self, param: ProductPostRequest) -> Product:
+    def map_to_domain(self, param: ProductPostRequest) -> Product:
         now = datetime.now()
 
         product_attributes: list[ProductAttribute] = []
@@ -111,7 +111,10 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
             updated_at=now,
         )
 
-    def mapFromDomain(self, param: Product) -> ProductPostResponse:
+    def map_to_domain_list(self, params: list[ProductPostRequest]) -> list[Product | ProductPostResponse]:
+        return super().map_to_domain_list(params)
+
+    def map_from_domain(self, param: Product) -> ProductPostResponse:
         # sale_start_date = param.sale_start_date
         # sale_end_date = param.sale_end_date
         # if sale_start_date is not None:
@@ -197,3 +200,6 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
             createdAt=param.created_at,
             updatedAt=param.updated_at,
         )
+    
+    def map_from_domain_list(self, params: list[Product | ProductPostResponse]) -> list[ProductPostRequest]:
+        return super().map_from_domain_list(params)
