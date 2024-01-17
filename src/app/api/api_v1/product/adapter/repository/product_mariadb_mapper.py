@@ -31,7 +31,7 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
         upsells_ids: list[str] = list(str(param.upsells_ids).split(','))
         cross_sells_ids: list[str] = list(str(param.cross_sells_ids).split(','))
 
-        metadata= json.loads(str(param.product_metadata))
+        metadata: dict = json.loads(str(param.product_metadata))
         metadata_objects: list[ProductMetadata] = []
         for key, value in metadata.items():
             metadata_objects.append(ProductMetadata(id="", key=str(key), value=str(value)))
@@ -73,8 +73,8 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
             variations=param.variations,
             menu_order=param.menu_order,
             metadata=metadata_objects,
-            created_at=param.created_at,
-            updated_at=param.updated_at,
+            created_at=created_at,
+            updated_at=updated_at,
         )
 
     def map_to_domain_list(self, params: list[ProductORM]) -> list[Product]:
@@ -102,7 +102,7 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
             images += product_img.id
 
         for product_meta in param.metadata:
-            metadata[f"${product_meta.key}"] = product_meta.value
+            metadata[f"{product_meta.key}"] = product_meta.value
 
         return ProductORM(
             id=param.id,
