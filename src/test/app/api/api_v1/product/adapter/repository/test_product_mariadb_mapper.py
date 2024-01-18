@@ -1,4 +1,3 @@
-import pytest
 from src.app.db.models.product_orm import ProductORM
 from src.app.api.api_v1.product.adapter.repository.product_mariadb_mapper import ProductMariaDbMapper
 from src.domain.base.mapper import Mapper
