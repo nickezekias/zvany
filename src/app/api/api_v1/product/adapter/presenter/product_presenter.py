@@ -3,12 +3,13 @@
 from src.app.api.api_v1.product.adapter.presenter.product_json_mapper import ProductJsonMapper
 from src.app.api.api_v1.product.adapter.response.product_response import ProductPostResponse
 from src.app.core.adapter.presenter import Presenter
+from src.domain.base.mapper import Mapper
 from src.domain.product.i_product_presenter import IProductPresenter
 from src.domain.product.product import Product
 
 
 class ProductPresenter(Presenter, IProductPresenter):
-    mapper: ProductJsonMapper
+    mapper: Mapper
 
     def __init__(self) -> None:
         self.mapper = ProductJsonMapper()
