@@ -12,7 +12,7 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def getAll(self) -> list[TEntity]:
+    def get_all(self) -> list[TEntity]:
         pass
 
     @abstractmethod
@@ -24,7 +24,7 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def add_range(self, entities: list[TEntity], NO_COMMIT=False) -> list[TEntity]:
+    def add_range(self, entities: list[TEntity]) -> list[TEntity]:
         pass
 
     @abstractmethod

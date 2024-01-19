@@ -1,5 +1,6 @@
 from sqlalchemy import Column, String
-from sqlalchemy.ext.declarative import as_declarative, declared_attr
+from sqlalchemy.ext.declarative import declared_attr
+from sqlalchemy.orm import as_declarative
 import uuid
 
 @as_declarative()
@@ -8,5 +9,5 @@ class Base:
     __name__: str
     # Generate __tablename__ automatically
     @declared_attr
-    def __tablename__(cls) -> str:
-        return f"{cls.__name__.lower()}s"
+    def __tablename__(self) -> str:
+        return f"{self.__name__.lower()}s"

@@ -10,6 +10,7 @@ from src.app.api.api_v1 import deps
 #routers
 from src.app.api.api_v1.account.router import router as account_router
 from src.app.api.api_v1.profile.router import router as profile_router
+from src.app.api.api_v1.product.router import router as product_router
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -26,6 +27,7 @@ app.add_middleware(
 
 app.include_router(account_router, prefix="/api/v1")
 app.include_router(profile_router, prefix="/api/v1")
+app.include_router(product_router, prefix="/api/v1/products")
 
 @app.get("/")
 async def root(db: Session = Depends(deps.get_db)):

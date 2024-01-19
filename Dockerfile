@@ -33,6 +33,6 @@ EOF
 # install Docker tools (cli, buildx, compose)
 COPY --from=gloursdocker/docker / /
 
-CMD ["./run.dev.sh"]
+# CMD ["./run.dev.sh"]
 # CMD [python3]
 

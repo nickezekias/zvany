@@ -5,11 +5,12 @@ services:
       context: .
       target: development
     container_name: zvany-api
+    tty: true
     ports:
       - '8000:8000'
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    restart: "no"
+    restart: "unless-stopped"
     depends_on:
       - db
   db:

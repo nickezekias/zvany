@@ -8,6 +8,7 @@ from jose import jwt
 from pydantic import ValidationError
 
 from src.app.api.api_v1.config import Settings
+from src.app.api.api_v1.product.adapter.repository.product_mariadb_repository import ProductMariaDbRepository
 from src.app.config import settings as app_settings
 from src.app.core.authenticator import Authenticator
 from src.app.core.util.crypto import Crypto
@@ -41,6 +42,9 @@ def get_db() -> Generator:
 
 def get_account_mariadb_repository(db=Depends(get_db)):
     return AccountMariaDbRepository(db)
+
+def get_product_mariadb_repository(db=Depends(get_db)):
+    return ProductMariaDbRepository(db)
 
 def get_current_user(
     repository: AccountMariaDbRepository=Depends(get_account_mariadb_repository),
