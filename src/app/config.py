@@ -13,12 +13,12 @@ class LoggingSettings(BaseSettings):
     LOGGING_LEVEL: int = logging.INFO  # logging levels are ints
 
 class Settings(BaseSettings):
-    APP_NAME: str = os.getenv("APP_NAME", "zvany-backend"),
+    APP_NAME: str = os.getenv('APP_NAME', "zvany-backend")
     API_V1_STR: str = "/api/v1"
-    APP_DEBUG: bool = os.getenv("APP_DEBUG", False)
+    APP_DEBUG: bool = (os.getenv('APP_DEBUG', "False")).lower() == 'true'
 
     # get key with command : openssl rand -hex 32
-    APP_KEY: str = os.getenv("APP_KEY", "randf877568978yugfdi8398238xkl48x8")
+    APP_KEY: str = os.getenv('APP_KEY', "randf877568978yugfdi8398238xkl48x8")
     CRYPT_ALGORITHM: str = "HS256"
 
     # 60 minutes * 24 hours = 1 day
@@ -27,14 +27,14 @@ class Settings(BaseSettings):
 
     #email
     EMAIL_TEMPLATES_DIR: str="src/app/email/templates"
-    MAIL_VERIFY_TOKEN_EXPIRE_MINUTES: int = os.getenv("MAIL_VERIFY_TOKEN_EXPIRE_MINUTES", "1440")
-    MAIL_PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: int = os.getenv("MAIL_PASSWORD_RESET_TOKEN_EXPIRE_MINUTES", "60")
-    MAIL_USERNAME: str = os.getenv("MAIL_USERNAME", "")
-    MAIL_PASSWORD: str = os.getenv("MAIL_PASSWORD", "")
-    MAIL_FROM_NAME: str = os.getenv("APP_NAME", "Zvany")
-    MAIL_FROM_ADDRESS: str = os.getenv("MAIL_FROM_ADDRESS", "admin@noenv.com")
-    MAIL_PORT: str = os.getenv("MAIL_PORT", "")
-    MAIL_HOST: str = os.getenv("MAIL_HOST", "")
+    MAIL_VERIFY_TOKEN_EXPIRE_MINUTES: int = int(os.getenv('MAIL_VERIFY_TOKEN_EXPIRE_MINUTES', "1440"))
+    MAIL_PASSWORD_RESET_TOKEN_EXPIRE_MINUTES: int = int(os.getenv('MAIL_PASSWORD_RESET_TOKEN_EXPIRE_MINUTES', "60"))
+    MAIL_USERNAME: str = os.getenv('MAIL_USERNAME', "")
+    MAIL_PASSWORD: str = os.getenv('MAIL_PASSWORD', "")
+    MAIL_FROM_NAME: str = os.getenv('APP_NAME', "Zvany")
+    MAIL_FROM_ADDRESS: str = os.getenv('MAIL_FROM_ADDRESS', "admin@noenv.com")
+    MAIL_PORT: str = os.getenv('MAIL_PORT', "")
+    MAIL_HOST: str = os.getenv('MAIL_HOST', "")
 
     # logging
     logging: LoggingSettings = LoggingSettings()
