@@ -74,7 +74,7 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
             menu_order=param.menu_order,
             metadata=metadata_objects,
             created_at=created_at,
-            updated_at=updated_at,
+            updated_at=updated_at
         )
 
     def map_to_domain_list(self, params: list[ProductORM]) -> list[Product]:
@@ -90,6 +90,36 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
             sale_start_date = DateTimeUtil.date_to_string(sale_start_date)
         if sale_end_date is not None:
             sale_end_date = DateTimeUtil.date_to_string(sale_end_date)
+
+        related_ids = param.related_ids
+        if related_ids is not None and len(related_ids) > 0:
+            related_ids = ''.join(related_ids)
+        elif related_ids is not None and len(related_ids) == 0:
+            related_ids = ''
+
+        cross_sells_ids = param.cross_sells_ids
+        if cross_sells_ids is not None and len(cross_sells_ids) > 0:
+            cross_sells_ids = ''.join(cross_sells_ids)
+        elif cross_sells_ids is not None and len(cross_sells_ids) == 0:
+            cross_sells_ids = ''
+
+        upsells_ids = param.upsells_ids
+        if upsells_ids is not None and len(upsells_ids) > 0:
+            upsells_ids = ''.join(upsells_ids)
+        elif upsells_ids is not None and len(upsells_ids) == 0:
+            upsells_ids = ''
+
+        categories = param.categories
+        if len(categories) > 0:
+            categories = ''.join(param.categories)
+        else:
+            categories = ''
+
+        tags = param.tags
+        if tags is not None and len(tags) > 0:
+            tags = str(''.join(tags))
+        elif tags is not None and len(tags) == 0:
+            tags = '' 
 
         attributes: str = ""
         images: str = ""
@@ -129,18 +159,18 @@ class ProductMariaDbMapper(Mapper[ProductORM, Product]):
             reviews_allowed=param.reviews_allowed,
             average_rating=param.average_rating,
             rating_count=param.rating_count,
-            related_ids=param.related_ids,
-            upsells_ids=param.upsells_ids,
-            cross_sells_ids=param.cross_sells_ids,
+            related_ids=related_ids,
+            upsells_ids=upsells_ids,
+            cross_sells_ids=cross_sells_ids,
             parent_id=param.parent_id,
             purchase_note=param.purchase_note,
-            categories=param.categories,
-            tags=param.tags,
+            categories=categories,
+            tags=tags,
             images=images,
             attributes=attributes,
             variations=param.variations,
             menu_order=param.menu_order,
-            product_metadata=metadata,
+            product_metadata=json.dumps(metadata),
             created_at = DateTimeUtil.date_to_string(param.created_at),
             updated_at = DateTimeUtil.date_to_string(param.updated_at)
         ) # type: ignore
