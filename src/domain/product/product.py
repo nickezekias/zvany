@@ -243,7 +243,7 @@ class Product(Entity):
             Returns:
                 is_valid (bool): Validation status, if valid returns True, if not False
         """
-        if Validator.is_non_empty_string(attr_value) and int(attr_value) > 0:
+        if Validator.is_non_empty_string(attr_value) and float(attr_value) > 0:
             return True
         else:
             self.errors.append(
@@ -266,7 +266,7 @@ class Product(Entity):
         elif (
             Validator.is_non_empty_string(self.sale_price)
             and self.sale_start_date is not None
-            and int(self.sale_price) > 0
+            and float(self.sale_price) > 0
         ):
             return True
         else:
