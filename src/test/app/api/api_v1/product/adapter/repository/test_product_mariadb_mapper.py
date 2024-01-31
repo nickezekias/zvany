@@ -14,5 +14,4 @@ class TestProductMariaDbMapper:
 
     def test_map_from_domain(self, product: Product):
         m_product_orm: ProductORM = self.mapper.map_from_domain(product)
-        print(isinstance(m_product_orm.product_metadata, str))
         assert str(m_product_orm.name) == "Iphone 8"
