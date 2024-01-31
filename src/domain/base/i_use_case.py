@@ -6,5 +6,5 @@ T = TypeVar('T')
 
 class IUseCase( ABC, Generic[S, T] ):
     @abstractmethod
-    async def execute(self, **params: S) -> T:
+    async def execute(self, **payload: S) -> T:
         pass
