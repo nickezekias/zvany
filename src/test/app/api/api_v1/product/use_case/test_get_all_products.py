@@ -1,3 +1,5 @@
+import pytest
+
 from src.app.api.api_v1.product.adapter.response.product_response import ProductPostResponse
 from src.app.api.api_v1.product.use_case.get_all_products import GetAllProducts
 from src.domain.product.i_product_presenter import IProductPresenter
@@ -10,6 +12,7 @@ class TestGetAllProducts:
     repository: IProductRepository = TestProductMariaDbRepository()
     presenter: IProductPresenter = TestProductPresenter()
 
+    @pytest.mark.asyncio
     async def test_execute(self, filter_query: str = ""):
         #FIXME: define tests for when there is a filter_query
         if filter_query:
