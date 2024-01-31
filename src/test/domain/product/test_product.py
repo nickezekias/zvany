@@ -81,6 +81,16 @@ class TestProduct:
             product.price = "-1"
             product.lazy_validation()
 
+    def test_price_value_decimal(self, product: Product):
+        product.price = "9.99"
+        product.lazy_validation()
+        assert len(product.errors) == 0
+
+    def test_price_error_value_neg_decimal(self, product: Product):
+        product.price = "-9.99"
+        with pytest.raises(ValueError):
+            product.lazy_validation()
+
     def test_regular_price_error_value_empty_price(self, product: Product):
         with pytest.raises(ValueError):
             product.regular_price = ""
