@@ -42,6 +42,7 @@ pydantic-settings==2.1.0
 pydantic_core==2.14.5
 PyMySQL==1.1.0
 pytest==7.4.3
+pytest-asyncio==0.23.4
 python-dotenv==1.0.0
 python-jose==3.3.0
 python-multipart==0.0.6
