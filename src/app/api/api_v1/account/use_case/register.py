@@ -85,7 +85,7 @@ class Register(IUseCase):
             self.account_repository.commit()
             #hydrate object with saved user
         except Exception as e:
-            return self.register_presenter.output_error_sever_db_commit(str(e))
+            return self.register_presenter.output_error_server_db_commit(str(e))
         
         user: User = self.account_repository.get_by_email(user_input.email)
 

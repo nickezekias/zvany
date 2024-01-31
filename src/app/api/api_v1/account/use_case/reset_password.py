@@ -82,7 +82,7 @@ class ResetPassword(IUseCase):
         try:
             self.repository.commit()
         except Exception as e:
-            self.presenter.output_error_sever_db_commit(str(e))
+            self.presenter.output_error_server_db_commit(str(e))
 
         return self.presenter.output_reset_password()
 

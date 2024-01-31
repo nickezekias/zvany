@@ -10,7 +10,7 @@ class IPresenter(ABC):
         pass
 
     @abstractmethod
-    def output_error_sever_db_commit(self, details: str | None  = None) -> None:
+    def output_error_server_db_commit(self, details: str | None  = None) -> None:
         pass
 
     @abstractmethod
