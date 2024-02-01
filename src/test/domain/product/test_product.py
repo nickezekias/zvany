@@ -130,6 +130,8 @@ class TestProduct:
     def test_sale_price_error_empty_value(self, product: Product):
         with pytest.raises(ValueError):
             product.sale_price = ""
+            product.sale_start_date = now
+            product.sale_end_date = now + timedelta(hours=1)
             product.lazy_validation()
 
     def test_sale_price_error_value_eq_zero(self, product: Product):
@@ -140,6 +142,7 @@ class TestProduct:
     def test_valid_sale_start_date_and_sale_end_date(self, product: Product):
         product.sale_start_date = datetime.now()
         product.sale_end_date = datetime.now() + timedelta(hours=1)
+        product.sale_price = "33.33"
         product.lazy_validation()
         assert len(product.errors) == 0
 
