@@ -1,10 +1,23 @@
 import pytest
-import json
-from datetime import datetime, timedelta
+from datetime import datetime
+from src.app.api.api_v1.product.adapter.presenter.product_json_mapper import (
+    ProductJsonMapper,
+)
+from src.app.api.api_v1.product.adapter.repository.product_mariadb_mapper import (
+    ProductMariaDbMapper,
+)
+
+from src.app.api.api_v1.product.adapter.request.product_request import (
+    ProductPostRequest,
+)
+from src.app.api.api_v1.product.adapter.response.product_response import (
+    ProductPostResponse,
+)
 
 from src.app.db.models.product_orm import ProductORM
 
 from src.domain.base.entity import Entity
+from src.domain.base.mapper import Mapper
 from src.domain.product.product import Product
 from src.domain.product.product_attribute import ProductAttribute
 from src.domain.product.product_image import ProductImage
@@ -14,13 +27,88 @@ from src.domain.util.date_time_util import DateTimeUtil
 
 now = datetime.now()
 
+mariadb_mapper: Mapper = ProductMariaDbMapper()
+json_mapper: Mapper = ProductJsonMapper()
+
+
 @pytest.fixture(scope="class")
 def entity():
     return Entity()
 
+
 @pytest.fixture(scope="function")
-def product() -> Product:
-    return Product(
+def product_req() -> ProductPostRequest:
+    data =  {
+        "id": "",
+        "name": "Iphone 8",
+        "slug": "iphone-8",
+        "sku": "IPHONE-8",
+        "type": "simple",
+        "status": "draft",
+        "catalogVisibility": "visible",
+        "longDescription": "",
+        "shortDescription": "The best iPhone ever, with 3gb RAM and 64 GB ROM. Glass back, apple touch and siri",
+        "price": "9.99",
+        "regularPrice": "9.99",
+        "salePrice": "",
+        "saleStartDate": None,
+        "saleEndDate": None,
+        "onSale": False,
+        "totalSales": 0,
+        "virtual": False,
+        "quantity": -1,
+        "soldIndividually": True,
+        "weight": "",
+        "shippingTaxable": False,
+        "reviewsAllowed": True,
+        "averageRating": 0,
+        "ratingCount": 0,
+        "relatedIds": [],
+        "upsellsIds": [],
+        "crossSellIds": [],
+        "parentId": "no-parent",
+        "purchaseNote": "Purchase Note",
+        "categories": [],
+        "tags": ["bags"],
+        "images": [
+            {
+                "id": "",
+                "alt": "Iphone 8 image",
+                "name": "Iphone 8",
+                "height": 480,
+                "position": 0,
+                "src": "https://pexels.com/some-iphone-image",
+                "width": 480,
+                "createdAt": "{{currentDate}}",
+                "updatedAt": "{{currentDate}}",
+            }
+        ],
+        "attributes": [
+            {
+                "id": "",
+                "name": "color",
+                "position": 0,
+                "values": ["white", "silver", "black", "gold"],
+                "variation": True,
+                "visible": True,
+                "createdAt": "{{currentDate}}",
+                "updatedAt": "{{currentDate}}",
+            }
+        ],
+        "variations": None,
+        "menuOrder": 0,
+        "metadata": [{"key": "title", "value": "Iphone 8"}],
+        "createdAt": "{{currentDate}}",
+        "updatedAt": "{{currentDate}}",
+    }
+    return ProductPostRequest(**data)
+
+
+@pytest.fixture(scope="function")
+def product(product_req: ProductPostRequest) -> Product:
+    return json_mapper.map_to_domain(product_req)
+
+    """   return Product(
         id="",
         name="Iphone 8",
         slug="iphone-8",
@@ -31,76 +119,40 @@ def product() -> Product:
         price="100000",
         regular_price="80000",
         sale_price="2",
-        sale_start_date = now,
-        sale_end_date = datetime.now() + timedelta(hours=1),
+        sale_start_date=now,
+        sale_end_date=datetime.now() + timedelta(hours=1),
         categories=["default"],
-        images=[ProductImage(id="", height=250, name="iphone8", src="iphone8.png", width=250, created_at=now, updated_at=now)],
-        attributes=[ProductAttribute(id="", name="color", values={"black", "red"}, created_at=now, updated_at=now)],
+        images=[
+            ProductImage(
+                id="",
+                height=250,
+                name="iphone8",
+                src="iphone8.png",
+                width=250,
+                created_at=now,
+                updated_at=now,
+            )
+        ],
+        attributes=[
+            ProductAttribute(
+                id="",
+                name="color",
+                values={"black", "red"},
+                created_at=now,
+                updated_at=now,
+            )
+        ],
         metadata=[ProductMetadata(id="", key="slug", value="iphone-8")],
         created_at=now,
-        updated_at=now + timedelta(minutes=60)
+        updated_at=now + timedelta(minutes=60),
     )
+
+ """
+@pytest.fixture(scope="function")
+def product_orm(product: Product) -> ProductORM:
+    return mariadb_mapper.map_from_domain(product)
 
 
 @pytest.fixture(scope="function")
-def product_orm(product: Product) -> ProductORM:
-    param: Product = product
-    sale_start_date = param.sale_start_date
-    sale_end_date = param.sale_end_date
-    if sale_start_date is not None:
-        sale_start_date = DateTimeUtil.date_to_string(sale_start_date)
-    if sale_end_date is not None:
-        sale_end_date = DateTimeUtil.date_to_string(sale_end_date)
-
-    attributes: str = ""
-    images: str = ""
-    metadata: dict = {}
-
-    for product_attr in param.attributes:
-        attributes += product_attr.id      
-
-    for product_img in param.images:
-        images += product_img.id
-
-    for product_meta in param.metadata:
-        metadata[f'{product_meta.key}'] = f'{product_meta.value}'
-    return ProductORM(
-        id=param.id,
-        name=param.name,
-        slug=param.slug,
-        sku=param.sku,
-        type=param.type,
-        status=param.status,
-        catalog_visibility=param.catalog_visibility,
-        long_description=param.long_description,
-        short_description=param.short_description,
-        price=param.price,
-        regular_price=param.regular_price,
-        sale_price=param.sale_price,
-        sale_start_date=sale_start_date,
-        sale_end_date=sale_end_date,
-        on_sale=param.on_sale,
-        total_sales=param.total_sales,
-        virtual=param.virtual,
-        quantity=param.quantity,
-        sold_individually=param.sold_individually,
-        weight=param.weight,
-        shipping_taxable=param.shipping_taxable,
-        reviews_allowed=param.reviews_allowed,
-        average_rating=param.average_rating,
-        rating_count=param.rating_count,
-        related_ids=param.related_ids,
-        upsells_ids=param.upsells_ids,
-        cross_sells_ids=param.cross_sells_ids,
-        parent_id=param.parent_id,
-        purchase_note=param.purchase_note,
-        categories=param.categories,
-        tags=param.tags,
-        images=images,
-        attributes=attributes,
-        variations=param.variations,
-        menu_order=param.menu_order,
-        product_metadata='{"hello": "world"}',
-        created_at = DateTimeUtil.date_to_string(param.created_at),
-        updated_at = DateTimeUtil.date_to_string(param.updated_at)
-    ) # type: ignore
+def product_post_response(product: Product) -> ProductPostResponse:
+    return json_mapper.map_from_domain(product)

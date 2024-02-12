@@ -310,13 +310,13 @@ class Product(Entity):
             and Validator.is_valid_datetime(self.sale_start_date)
         ):
             time_diff = self.sale_end_date - self.sale_start_date
-            if time_diff.seconds >= 3600:
+            if time_diff.total_seconds() >= 3600:
                 return True
             else:
                 self.errors.append(
                     {
                         "type": "datetime",
-                        "loc": f"{self.get_class_name()}, sale_start_date",
+                        "loc": f"{self.get_class_name()}, sale_end_date",
                         "msg": "sale_end_date should be at least 1 hour gt sale_start_date",
                         "input": self.sale_end_date,
                     }

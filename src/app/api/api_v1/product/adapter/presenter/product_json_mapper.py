@@ -70,7 +70,7 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
         if sale_end_date is not None:
             sale_end_date = DateTimeUtil.string_to_date(sale_end_date)
 
-        return Product(
+        product: Product =  Product(
             id="",
             name=param.name,
             slug=param.slug,
@@ -111,6 +111,11 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
             updated_at=now,
         )
 
+        if not isinstance(product, Product):
+            raise(ValueError("mapper.error.parameterTypeNotProduct"))
+
+        return product
+
     def map_to_domain_list(self, params: list[ProductPostRequest]) -> list[Product | ProductPostResponse]:
         return super().map_to_domain_list(params)
 
@@ -121,6 +126,11 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
         #     sale_start_date = DateTimeUtil.date_to_string(sale_start_date)
         # if sale_end_date is not None:
         #     sale_end_date = DateTimeUtil.date_to_string(sale_end_date)
+
+        if not isinstance(param, Product):
+            raise(ValueError("mapper.error.parameterTypeNotProduct"))
+
+        param.lazy_validation()
 
         product_attributes: list[ProductAttributeResponse] = []
         product_images: list[ProductImageResponse] = []
@@ -156,7 +166,7 @@ class ProductJsonMapper(Mapper[ProductPostRequest, Product | ProductPostResponse
         for product_meta in param.metadata:
             product_metadata.append(
                 ProductMetadataResponse(
-                    id="", key=product_meta.key, value=product_meta.value
+                    key=product_meta.key, value=product_meta.value
                 )
             )
 
