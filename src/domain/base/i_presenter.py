@@ -14,5 +14,5 @@ class IPresenter(ABC):
         pass
 
     @abstractmethod
-    def output_error_domain_validation(self, details: dict) -> None:
+    def output_error_domain_validation(self, details: dict | str) -> None:
         pass

@@ -17,7 +17,7 @@ class Presenter(IPresenter):
       detail={ "message": "server.errors.db.couldNotCommitToDB", "details": details }
     )
   
-  def output_error_domain_validation(self, details: dict) -> None:
+  def output_error_domain_validation(self, details: dict | str) -> None:
     raise HTTPException(
       status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
       detail=str(details)
