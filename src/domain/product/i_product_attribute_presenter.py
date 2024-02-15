@@ -1,8 +1,11 @@
 from abc import abstractmethod
 
-from src.app.api.api_v1.product.adapter.response.product_attribute_response import ProductAttributeResponse
+from src.app.api.api_v1.product.adapter.response.product_attribute_response import (
+    ProductAttributeResponse,
+)
 from src.domain.base.i_presenter import IPresenter
 from src.domain.product.product_attribute import ProductAttribute
+
 
 class IProductAttributePresenter(IPresenter):
 
@@ -11,7 +14,9 @@ class IProductAttributePresenter(IPresenter):
         pass
 
     @abstractmethod
-    def output_index(self, data: list[ProductAttribute]) -> list[ProductAttributeResponse]:
+    def output_index(
+        self, data: list[ProductAttribute]
+    ) -> list[ProductAttributeResponse]:
         pass
 
     @abstractmethod
@@ -22,7 +27,10 @@ class IProductAttributePresenter(IPresenter):
     def output_update(self, data: ProductAttribute) -> ProductAttributeResponse:
         pass
 
-
     @abstractmethod
     def output_error_invalid_data(self, error: ValueError) -> None:
+        pass
+
+    @abstractmethod
+    def output_error_duplicate_name(self) -> None:
         pass

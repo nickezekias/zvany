@@ -1,16 +1,26 @@
 from sqlalchemy.orm import Session
 
-from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import ProductAttributeMariaDbMapper
+from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import (
+    ProductAttributeMariaDbMapper,
+)
 from src.app.db.models.product_attribute_orm import ProductAttributeORM
 from src.app.db.repository import Repository
 from src.domain.base.mapper import Mapper
+from src.domain.product.i_product_attribute_repository import (
+    IProductAttributeRepository,
+)
 from src.domain.product.product_attribute import ProductAttribute
 
-class ProductAttributeMariaDbRepository(Repository[ProductAttributeORM, ProductAttribute]):
+
+class ProductAttributeMariaDbRepository(
+    Repository[ProductAttributeORM, ProductAttribute], IProductAttributeRepository
+):
     db: Session
     mapper: Mapper
 
-    def __init__(self, db: Session, mapper: Mapper = ProductAttributeMariaDbMapper()) -> None:
+    def __init__(
+        self, db: Session, mapper: Mapper = ProductAttributeMariaDbMapper()
+    ) -> None:
         super().__init__(db, mapper)
         self.db = db
         self.mapper = mapper
@@ -20,7 +30,18 @@ class ProductAttributeMariaDbRepository(Repository[ProductAttributeORM, ProductA
         orm: ProductAttributeORM | None = self.db.query(ProductAttributeORM).get(id)
         if orm:
             return self.mapper.map_to_domain(orm)
-        else: return None
+        else:
+            return None
+
+    def get_by_name(self, name: str) -> ProductAttribute | None:
+        orm = (
+            self.db.query(ProductAttributeORM)
+            .filter(ProductAttributeORM.name == name)
+            .one_or_none()
+        )
+        if orm:
+            return self.mapper.map_to_domain(orm)
+        return None
 
     def get_all(self) -> list[ProductAttribute]:
         orm_list: list[ProductAttributeORM] = self.db.query(ProductAttributeORM).all()
