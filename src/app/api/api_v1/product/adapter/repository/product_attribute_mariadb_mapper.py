@@ -35,7 +35,7 @@ class ProductAttributeMariaDbMapper(Mapper[ProductAttributeORM, ProductAttribute
         return product_attributes
     
     def map_from_domain(self, param: ProductAttribute) -> ProductAttributeORM:
-        values = ''.join(param.values)
+        values = ','.join(param.values)
 
         return ProductAttributeORM(
             id=param.id,
