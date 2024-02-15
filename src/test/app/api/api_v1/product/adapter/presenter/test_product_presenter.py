@@ -13,7 +13,7 @@ class TestProductPresenter(Presenter, IProductPresenter):
     mapper: Mapper = ProductJsonMapper()
      
     #FIXME: Actually return list of product_response
-    def output(self, data: list[Product]) -> list[ProductPostResponse]:
+    def output_index(self, data: list[Product]) -> list[ProductPostResponse]:
         return []
 
     def output_create(self, data: Product) -> ProductPostResponse:

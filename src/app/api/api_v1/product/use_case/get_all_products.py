@@ -24,4 +24,4 @@ class GetAllProducts(IUseCase):
             # add code to filter products list against given query
             pass
         products: list[Product] = self.repository.get_all()
-        return self.presenter.output(products)
+        return self.presenter.output_index(products)

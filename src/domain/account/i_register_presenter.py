@@ -9,7 +9,7 @@ TRegisterResponse = TypeVar('TRegisterResponse')
 class IRegisterPresenter(IPresenter):
 
     @abstractmethod
-    def output(self, user: TUserEntity) -> TRegisterResponse:
+    def output_index(self, user: TUserEntity) -> TRegisterResponse:
         pass
 
     @abstractmethod

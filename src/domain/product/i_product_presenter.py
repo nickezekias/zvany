@@ -8,7 +8,7 @@ class IProductPresenter(IPresenter):
     """Product Presenter Interface"""
 
     @abstractmethod
-    def output(self, data: list[Product]) -> list[ProductPostResponse]:
+    def output_index(self, data: list[Product]) -> list[ProductPostResponse]:
         pass
 
     @abstractmethod

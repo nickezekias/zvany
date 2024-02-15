@@ -14,7 +14,7 @@ class ProductPresenter(Presenter, IProductPresenter):
     def __init__(self) -> None:
         self.mapper = ProductJsonMapper()
 
-    def output(self, data: list[Product]) -> list[ProductPostResponse]:
+    def output_index(self, data: list[Product]) -> list[ProductPostResponse]:
         product_res_list: list[ProductPostResponse] = []
         for product in data:
             product_res_list.append(self.mapper.map_from_domain(product))
