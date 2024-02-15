@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class ProductAttributeRequest(BaseModel):
-    id: str = ""
+    id: str
     name: str
     position: int
     values: set[str]

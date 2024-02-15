@@ -1,11 +1,14 @@
 import pytest
 from datetime import datetime
+from src.app.api.api_v1.product.adapter.presenter.product_attribute_json_mapper import ProductAttributeJsonMapper
 from src.app.api.api_v1.product.adapter.presenter.product_json_mapper import (
     ProductJsonMapper,
 )
+from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import ProductAttributeMariaDbMapper
 from src.app.api.api_v1.product.adapter.repository.product_mariadb_mapper import (
     ProductMariaDbMapper,
 )
+from src.app.api.api_v1.product.adapter.request.product_attribute_request import ProductAttributeRequest
 
 from src.app.api.api_v1.product.adapter.request.product_request import (
     ProductPostRequest,
@@ -13,6 +16,7 @@ from src.app.api.api_v1.product.adapter.request.product_request import (
 from src.app.api.api_v1.product.adapter.response.product_response import (
     ProductPostResponse,
 )
+from src.app.db.models.product_attribute_orm import ProductAttributeORM
 
 from src.app.db.models.product_orm import ProductORM
 
@@ -20,10 +24,6 @@ from src.domain.base.entity import Entity
 from src.domain.base.mapper import Mapper
 from src.domain.product.product import Product
 from src.domain.product.product_attribute import ProductAttribute
-from src.domain.product.product_image import ProductImage
-from src.domain.product.product_metadata import ProductMetadata
-from src.domain.util.date_time_util import DateTimeUtil
-
 
 now = datetime.now()
 
@@ -35,6 +35,27 @@ json_mapper: Mapper = ProductJsonMapper()
 def entity():
     return Entity()
 
+@pytest.fixture(scope="function")
+def product_attribute_req() -> ProductAttributeRequest:
+    data = {
+            "id": "",
+            "name": "color",
+            "position": 0,
+            "values": ["white", "silver", "black", "gold"],
+            "variation": True,
+            "visible": True,
+            "createdAt": "2024-02-12T23:04:11.559172",
+            "updatedAt": "2024-02-12T23:04:11.559172"
+        }
+    return ProductAttributeRequest(**data)
+
+@pytest.fixture(scope="function")
+def product_attribute(product_attribute_req: ProductAttributeRequest) -> ProductAttribute:
+    return ProductAttributeJsonMapper().map_to_domain(product_attribute_req)
+
+@pytest.fixture(scope="function")
+def product_attribute_orm(product_attribute: ProductAttribute) -> ProductAttributeORM:
+    return ProductAttributeMariaDbMapper().map_from_domain(product_attribute)
 
 @pytest.fixture(scope="function")
 def product_req() -> ProductPostRequest:
