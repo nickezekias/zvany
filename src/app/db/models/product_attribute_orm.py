@@ -6,7 +6,7 @@ class ProductAttributeORM(Base):
     __tablename__="product_attributes" # type: ignore
 
     id=Column(String(36), primary_key=True, index=True)
-    name = Column(String)
+    name = Column(String, unique=True)
     position = Column(SmallInteger)
     values = Column(String)
     variation = Column(Boolean())

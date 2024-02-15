@@ -24,10 +24,10 @@ def upgrade() -> None:
     op.create_table(
         "product_attributes",
         sa.Column('id', sa.CHAR(36), primary_key=True, nullable=False),
-        sa.Column('name', sa.String(30)),
+        sa.Column('name', sa.String(30), unique=True),
         sa.Column('position', sa.SmallInteger),
         sa.Column('values', sa.String(255)),
-        sa.Column('variations', sa.Boolean()),
+        sa.Column('variation', sa.Boolean()),
         sa.Column('visible', sa.Boolean()),
         sa.Column('created_at', sa.DateTime),
         sa.Column('updated_at', sa.DateTime)
