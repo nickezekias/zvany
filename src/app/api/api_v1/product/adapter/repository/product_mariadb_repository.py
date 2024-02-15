@@ -1,15 +1,15 @@
-import sqlalchemy as sa
 from sqlalchemy.orm import Session
 from src.app.api.api_v1.product.adapter.repository.product_mariadb_mapper import ProductMariaDbMapper
 from src.app.db.models.product_orm import ProductORM
 
 from src.app.db.repository import Repository
+from src.domain.base.mapper import Mapper
 from src.domain.product.i_product_repository import IProductRepository
 from src.domain.product.product import Product
 
 class ProductMariaDbRepository(Repository[ProductORM, Product], IProductRepository):
     db: Session
-    mapper: ProductMariaDbMapper
+    mapper: Mapper
 
     def __init__(self, db: Session, mapper: ProductMariaDbMapper = ProductMariaDbMapper()) -> None:
         super().__init__(db, mapper)
