@@ -32,7 +32,7 @@ class ProductImage(Entity):
         alt: str = "",
         position: int = 0,
     ) -> None:
-        self.id = id
+        super().__init__(id)
 
         self.alt = alt
         self.height = height
@@ -54,5 +54,3 @@ class ProductImage(Entity):
         self.validate_is_datetime_gte_min(
             "updated_at", self.updated_at, self.created_at
         )
-
-        super().__init__()

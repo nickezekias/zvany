@@ -5,9 +5,11 @@ import uuid
 
 from src.domain.util.validator import Validator
 
+
 @dataclass
 class Entity(Abstract):
     """Base class for domain models"""
+
     # FIXME: use a factory to initialize uuid instead of entity abstract class
     # FIX: implement a factory pattern
     # FIX: remove the need for an id in the whole system
@@ -15,9 +17,11 @@ class Entity(Abstract):
     id: str
     errors: list[dict]
 
-    def __init__(self) -> None:
+    # pylint: disable=W0622
+    def __init__(self, id="") -> None:
+        # pylint: enable=W0622
 
-        self.id = ""
+        self.id = id
         self.errors = []
 
         if not self.id:
@@ -60,7 +64,9 @@ class Entity(Abstract):
             )
             return False
 
-    def validate_is_datetime_gte_min(self, attr_name: str, attr_value: datetime, min_value: datetime):
+    def validate_is_datetime_gte_min(
+        self, attr_name: str, attr_value: datetime, min_value: datetime
+    ):
         if Validator.is_datetime_gte_min(attr_value, min_value):
             return True
         else:
@@ -73,7 +79,6 @@ class Entity(Abstract):
                 }
             )
             return False
-
 
     def validate_nullable_datetime(
         self, attr_name: str, attr_value: datetime | None
@@ -126,7 +131,9 @@ class Entity(Abstract):
             )
             return False
 
-    def validate_is_string_with_len_gte_min(self, attr_name: str, attr_value: str, min_str_length: int) -> bool:
+    def validate_is_string_with_len_gte_min(
+        self, attr_name: str, attr_value: str, min_str_length: int
+    ) -> bool:
         """
         Checks if attr is string with length greater than or equal to min and returns True if valid and False if not
             Parameters:

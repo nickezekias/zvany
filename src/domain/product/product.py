@@ -118,9 +118,7 @@ class Product(Entity):
         variations: list[str] | None = None,
         menu_order: int = 0,
     ) -> None:
-        self.id = id
-
-        super().__init__()
+        super().__init__(id)
 
         self.name = name
         self.slug = slug

@@ -17,12 +17,9 @@ class ProductMetadata(Entity):
         key: str,
         value: str
     ) -> None:
-        self.id = id
-
+        super().__init__(id)
         self.key = key
-        self.validate_is_non_empty_string("key", self.key)
-
         self.value = value
-        self.validate_is_non_empty_string("value", self.value)
 
-        super().__init__()
+        self.validate_is_non_empty_string("key", self.key)
+        self.validate_is_non_empty_string("value", self.value)
