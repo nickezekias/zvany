@@ -8,6 +8,7 @@ now = datetime.now()
 
 class TestProduct:
     def test_correct_product_instantiation(self, product: Product):
+        assert product.id != ""
         assert product.name == "Iphone 8"
         assert len(product.errors) == 0
         product.clear_validations()
