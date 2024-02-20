@@ -23,5 +23,5 @@ class Presenter(IPresenter):
 
     def output_error_object_not_found(self, details: dict | str) -> None:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail={str(details)}
+            status_code=status.HTTP_404_NOT_FOUND, detail=str(details)
         )
