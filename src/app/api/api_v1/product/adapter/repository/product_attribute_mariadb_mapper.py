@@ -3,6 +3,7 @@ from src.domain.base.mapper import Mapper
 from src.domain.product.product_attribute import ProductAttribute
 from src.domain.util.date_time_util import DateTimeUtil
 
+
 class ProductAttributeMariaDbMapper(Mapper[ProductAttributeORM, ProductAttribute]):
 
     def map_to_domain(self, param: ProductAttributeORM) -> ProductAttribute:
@@ -13,29 +14,31 @@ class ProductAttributeMariaDbMapper(Mapper[ProductAttributeORM, ProductAttribute
         if updated_at is not None and isinstance(updated_at, str):
             updated_at = DateTimeUtil.string_to_date(updated_at)
 
-        values: set[str] = set(str(param.values).split(','))
+        values: set[str] = set(str(param.values).split(","))
 
         return ProductAttribute(
             id=str(param.id),
             name=str(param.name),
-            position=param.position, # type: ignore
+            position=param.position,  # type: ignore
             values=values,
-            variation=param.variation, # type: ignore
-            visible=param.visible, # type: ignore
-            created_at=created_at, #type: ignore
-            updated_at=updated_at #type: ignore
+            variation=param.variation,  # type: ignore
+            visible=param.visible,  # type: ignore
+            created_at=created_at,  # type: ignore
+            updated_at=updated_at,  # type: ignore
         )
 
-    def map_to_domain_list(self, params: list[ProductAttributeORM]) -> list[ProductAttribute]:
+    def map_to_domain_list(
+        self, params: list[ProductAttributeORM]
+    ) -> list[ProductAttribute]:
         product_attributes: list[ProductAttribute] = []
 
         for param in params:
             product_attributes.append(self.map_to_domain(param))
 
         return product_attributes
-    
+
     def map_from_domain(self, param: ProductAttribute) -> ProductAttributeORM:
-        values = ','.join(param.values)
+        values = ",".join(param.values)
 
         return ProductAttributeORM(
             id=param.id,
@@ -44,11 +47,13 @@ class ProductAttributeMariaDbMapper(Mapper[ProductAttributeORM, ProductAttribute
             values=values,
             variation=param.variation,
             visible=param.visible,
-            created_at = DateTimeUtil.date_to_string(param.created_at),
-            updated_at = DateTimeUtil.date_to_string(param.updated_at)
-        ) #type: ignore
+            created_at=DateTimeUtil.date_to_string(param.created_at),
+            updated_at=DateTimeUtil.date_to_string(param.updated_at),
+        )  # type: ignore
 
-    def map_from_domain_list(self, params: list[ProductAttribute]) -> list[ProductAttributeORM]:
+    def map_from_domain_list(
+        self, params: list[ProductAttribute]
+    ) -> list[ProductAttributeORM]:
         product_attr_orm_list: list[ProductAttributeORM] = []
 
         for param in params:

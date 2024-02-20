@@ -30,24 +30,19 @@ class ProductAttribute(Entity):
         variation: bool = True,
         visible: bool = True,
     ) -> None:
-        self.id = id
+        super().__init__(id)
 
         self.name = name
-        self.validate_is_non_empty_string("name", name)
-
         self.values = values
-        self.validate_is_non_empty_set("values", self.values)
-
         self.created_at = created_at
-        self.validate_is_datetime("created_at", self.created_at)
-
         self.updated_at = updated_at
-        self.validate_is_datetime_gte_min(
-            "updated_at", self.updated_at, self.created_at
-        )
-
         self.position = position
         self.variation = variation
         self.visible = visible
 
-        super().__init__()
+        self.validate_is_non_empty_string("name", name)
+        self.validate_is_non_empty_set("values", self.values)
+        self.validate_is_datetime("created_at", self.created_at)
+        self.validate_is_datetime_gte_min(
+            "updated_at", self.updated_at, self.created_at
+        )
