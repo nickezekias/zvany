@@ -1,6 +1,6 @@
-
-
-from src.app.api.api_v1.product.adapter.response.product_response import ProductPostResponse
+from src.app.api.api_v1.product.adapter.response.product_response import (
+    ProductPostResponse,
+)
 from src.domain.base.i_use_case import IUseCase
 from src.domain.product.i_product_presenter import IProductPresenter
 from src.domain.product.i_product_repository import IProductRepository
