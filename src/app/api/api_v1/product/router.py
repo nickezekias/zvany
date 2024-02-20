@@ -28,6 +28,9 @@ from src.app.api.api_v1.product.adapter.response.product_attribute_response impo
 from src.app.api.api_v1.product.adapter.response.product_response import (
     ProductPostResponse,
 )
+from src.app.api.api_v1.product.use_case.attributes.delete_product_attribute import (
+    DeleteProductAttribute,
+)
 from src.app.api.api_v1.product.use_case.attributes.get_all_product_attributes import (
     GetAllProductAttributes,
 )
@@ -157,3 +160,14 @@ async def update_attribute(
     return await UpdateProductAttribute(repository, presenter).execute(
         {"product_attribute": product_attr}
     )
+
+
+@router.delete("/attributes/{id}", response_model=dict | None, status_code=200)
+async def delete_attribute(
+    id: str,
+    repository: IProductAttributeRepository = Depends(
+        deps.get_product_attribute_mariadb_repository
+    ),
+) -> dict | None:
+    presenter: IProductAttributePresenter = ProductAttributePresenter()
+    return await DeleteProductAttribute(repository, presenter).execute({"id": id})

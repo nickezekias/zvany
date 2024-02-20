@@ -28,6 +28,10 @@ class IProductAttributePresenter(IPresenter):
         pass
 
     @abstractmethod
+    def output_delete(self) -> dict:
+        pass
+
+    @abstractmethod
     def output_error_invalid_data(self, error: ValueError) -> None:
         pass
 

@@ -1,14 +1,14 @@
-
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-TEntity = TypeVar('TEntity')
-ORMEntity = TypeVar('ORMEntity')
-TQuery = TypeVar('TQuery')
+TEntity = TypeVar("TEntity")
+ORMEntity = TypeVar("ORMEntity")
+TQuery = TypeVar("TQuery")
+
 
 class IRepository(ABC, Generic[ORMEntity, TEntity]):
     @abstractmethod
-    def get(self,id: int | str) -> TEntity:
+    def get(self, id: int | str) -> TEntity:
         pass
 
     @abstractmethod
@@ -16,11 +16,11 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def find(self,query: TQuery)-> list[TEntity]:
+    def find(self, query: TQuery) -> list[TEntity]:
         pass
 
     @abstractmethod
-    def add(self,entity: TEntity) -> None:
+    def add(self, entity: TEntity) -> None:
         pass
 
     @abstractmethod
@@ -32,7 +32,7 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def remove(self, entity: TEntity) -> None:
+    def remove(self, id: str | int) -> None:
         pass
 
     @abstractmethod

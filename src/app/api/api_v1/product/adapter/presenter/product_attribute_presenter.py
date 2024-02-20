@@ -32,6 +32,9 @@ class ProductAttributePresenter(Presenter, IProductAttributePresenter):
     def output_update(self, data: ProductAttribute) -> ProductAttributeResponse:
         return self.mapper.map_from_domain(data)
 
+    def output_delete(self) -> dict:
+        return {"success": True}
+
     def output_error_invalid_data(self, error: ValueError) -> None:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

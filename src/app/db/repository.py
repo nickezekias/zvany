@@ -9,10 +9,11 @@ import sqlalchemy as sa
 from sqlalchemy.orm import Session
 from loguru import logger
 
-TEntity = TypeVar('TEntity')
-ORMEntity = TypeVar('ORMEntity')
-DbContext = TypeVar('DbContext')
-TQuery = TypeVar('TQuery')
+TEntity = TypeVar("TEntity")
+ORMEntity = TypeVar("ORMEntity")
+DbContext = TypeVar("DbContext")
+TQuery = TypeVar("TQuery")
+
 
 class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
     db: Session
@@ -43,17 +44,14 @@ class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
     def update(self, entity: TEntity) -> TEntity:
         pass
 
-
-
-    #TODO: Return refreshed entities instead of input entities
+    # TODO: Return refreshed entities instead of input entities
     def add_range(self, entities: list[TEntity]) -> list[TEntity]:
         orms: list[ORMEntity] = self.mapper.map_from_domain_list(entities)
         self.db.add_all(orms)
         return entities
 
-    def remove(self, entity: TEntity) -> None:
-        orm = self.mapper.map_from_domain(entity)
-        self.db.remove(orm)
+    def remove(self, id: str | int) -> None:
+        pass
 
     def remove_range(self, entities: list[TEntity]) -> None:
         return super().remove_range()
@@ -62,15 +60,9 @@ class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
         try:
             self.db.commit()
         except sa.exc.SQLAlchemyError as e:
-            error = str(e.__dict__['orig'])
+            error = str(e.__dict__["orig"])
             logger.error(error)
             raise Exception(error)
 
     def refresh(self, entity: TEntity) -> None:
         self.db.refresh(entity)
-
-
-
-
-
-    

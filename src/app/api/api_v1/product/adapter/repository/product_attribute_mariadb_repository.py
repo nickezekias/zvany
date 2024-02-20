@@ -65,3 +65,11 @@ class ProductAttributeMariaDbRepository(
             return result
         else:
             return None
+
+    def remove(self, id: str) -> bool:
+        orm_to_delete: ProductAttributeORM | None = self.db.get(ProductAttributeORM, id)
+        if orm_to_delete:
+            self.db.delete(orm_to_delete)
+            return True
+        else:
+            return False
