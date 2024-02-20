@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import (
@@ -46,3 +48,20 @@ class ProductAttributeMariaDbRepository(
     def get_all(self) -> list[ProductAttribute]:
         orm_list: list[ProductAttributeORM] = self.db.query(ProductAttributeORM).all()
         return self.mapper.map_to_domain_list(orm_list)
+
+    def update(self, entity: ProductAttribute) -> ProductAttribute | None:
+        entity.updated_at = datetime.now()
+        payload_orm: ProductAttributeORM = self.mapper.map_from_domain(entity)
+
+        # check if orm object with payload.id exists
+        found_orm = self.db.query(ProductAttributeORM).filter_by(id=entity.id)
+        if found_orm:
+            found_orm.update(payload_orm.as_dict_update())
+        else:
+            return None
+
+        result = self.get(entity.id)
+        if result:
+            return result
+        else:
+            return None

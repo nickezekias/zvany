@@ -31,6 +31,9 @@ from src.app.api.api_v1.product.adapter.response.product_response import (
 from src.app.api.api_v1.product.use_case.attributes.get_all_product_attributes import (
     GetAllProductAttributes,
 )
+from src.app.api.api_v1.product.use_case.attributes.update_product_attribute import (
+    UpdateProductAttribute,
+)
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
 from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
     CreateProductAttribute,
@@ -132,3 +135,25 @@ async def get_attributes(
 ) -> list[ProductAttributeResponse]:
     presenter: IProductAttributePresenter = ProductAttributePresenter()
     return await GetAllProductAttributes(repository, presenter).execute({})
+
+
+@router.put(
+    "/attributes", response_model=ProductAttributeResponse | None, status_code=200
+)
+async def update_attribute(
+    product_attr_req: ProductAttributeRequest,
+    repository: IProductAttributeRepository = Depends(
+        deps.get_product_attribute_mariadb_repository
+    ),
+) -> ProductAttributeResponse | None:
+    presenter: IProductAttributePresenter = ProductAttributePresenter()
+    mapper: Mapper = ProductAttributeJsonMapper()
+
+    try:
+        product_attr: ProductAttribute = mapper.map_to_domain(product_attr_req)
+    except ValueError as e:
+        return presenter.output_error_domain_validation(str(e))
+
+    return await UpdateProductAttribute(repository, presenter).execute(
+        {"product_attribute": product_attr}
+    )
