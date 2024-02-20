@@ -28,6 +28,9 @@ from src.app.api.api_v1.product.adapter.response.product_attribute_response impo
 from src.app.api.api_v1.product.adapter.response.product_response import (
     ProductPostResponse,
 )
+from src.app.api.api_v1.product.use_case.attributes.get_all_product_attributes import (
+    GetAllProductAttributes,
+)
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
 from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
     CreateProductAttribute,
@@ -80,6 +83,11 @@ async def create(
     return await CreateProduct(repository, presenter).execute({"product": product})
 
 
+"""
+        ******************** PRODUCT ATTRIBUTES *********************
+"""
+
+
 @router.post(
     "/attributes", response_model=ProductAttributeResponse | None, status_code=201
 )
@@ -112,3 +120,15 @@ async def get_attribute(
 ) -> ProductAttributeResponse | None:
     presenter: IProductAttributePresenter = ProductAttributePresenter()
     return await GetProductAttribute(repository, presenter).execute({"id": id})
+
+
+@router.get(
+    "/attributes", response_model=list[ProductAttributeResponse], status_code=200
+)
+async def get_attributes(
+    repository: IProductAttributeRepository = Depends(
+        deps.get_product_attribute_mariadb_repository
+    ),
+) -> list[ProductAttributeResponse]:
+    presenter: IProductAttributePresenter = ProductAttributePresenter()
+    return await GetAllProductAttributes(repository, presenter).execute({})
