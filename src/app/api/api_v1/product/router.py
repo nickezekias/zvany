@@ -29,11 +29,11 @@ from src.app.api.api_v1.product.adapter.response.product_response import (
     ProductPostResponse,
 )
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
-from src.app.api.api_v1.product.use_case.create_product_attribute import (
+from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
     CreateProductAttribute,
 )
 from src.app.api.api_v1.product.use_case.get_all_products import GetAllProducts
-from src.app.api.api_v1.product.use_case.get_product_attribute import (
+from src.app.api.api_v1.product.use_case.attributes.get_product_attribute import (
     GetProductAttribute,
 )
 from src.app.db.models.product_orm import ProductORM
