@@ -1,14 +1,20 @@
 import pytest
 from datetime import datetime
-from src.app.api.api_v1.product.adapter.presenter.product_attribute_json_mapper import ProductAttributeJsonMapper
+from src.app.api.api_v1.product.adapter.presenter.product_attribute_json_mapper import (
+    ProductAttributeJsonMapper,
+)
 from src.app.api.api_v1.product.adapter.presenter.product_json_mapper import (
     ProductJsonMapper,
 )
-from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import ProductAttributeMariaDbMapper
+from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_mapper import (
+    ProductAttributeMariaDbMapper,
+)
 from src.app.api.api_v1.product.adapter.repository.product_mariadb_mapper import (
     ProductMariaDbMapper,
 )
-from src.app.api.api_v1.product.adapter.request.product_attribute_request import ProductAttributeRequest
+from src.app.api.api_v1.product.adapter.request.product_attribute_request import (
+    ProductAttributeRequest,
+)
 
 from src.app.api.api_v1.product.adapter.request.product_request import (
     ProductPostRequest,
@@ -24,6 +30,7 @@ from src.domain.base.entity import Entity
 from src.domain.base.mapper import Mapper
 from src.domain.product.product import Product
 from src.domain.product.product_attribute import ProductAttribute
+from src.domain.product.product_category import ProductCategory
 
 now = datetime.now()
 
@@ -35,31 +42,52 @@ json_mapper: Mapper = ProductJsonMapper()
 def entity():
     return Entity()
 
+
 @pytest.fixture(scope="function")
 def product_attribute_req() -> ProductAttributeRequest:
     data = {
-            "id": "",
-            "name": "color",
-            "position": 0,
-            "values": ["white", "silver", "black", "gold"],
-            "variation": True,
-            "visible": True,
-            "createdAt": "2024-02-12T23:04:11.559172",
-            "updatedAt": "2024-02-12T23:04:11.559172"
-        }
+        "id": "",
+        "name": "color",
+        "position": 0,
+        "values": ["white", "silver", "black", "gold"],
+        "variation": True,
+        "visible": True,
+        "createdAt": "2024-02-12T23:04:11.559172",
+        "updatedAt": "2024-02-12T23:04:11.559172",
+    }
     return ProductAttributeRequest(**data)
 
+
 @pytest.fixture(scope="function")
-def product_attribute(product_attribute_req: ProductAttributeRequest) -> ProductAttribute:
+def product_attribute(
+    product_attribute_req: ProductAttributeRequest,
+) -> ProductAttribute:
     return ProductAttributeJsonMapper().map_to_domain(product_attribute_req)
+
 
 @pytest.fixture(scope="function")
 def product_attribute_orm(product_attribute: ProductAttribute) -> ProductAttributeORM:
     return ProductAttributeMariaDbMapper().map_from_domain(product_attribute)
 
+
+@pytest.fixture(scope="function")
+def product_category() -> ProductCategory:
+    return ProductCategory(
+        id="",
+        name="default",
+        parent="default",
+        slug="default",
+        created_at=now,
+        updated_at=now,
+        description="",
+        position=1,
+        visible=True,
+    )
+
+
 @pytest.fixture(scope="function")
 def product_req() -> ProductPostRequest:
-    data =  {
+    data = {
         "id": "",
         "name": "Iphone 8",
         "slug": "iphone-8",
@@ -169,6 +197,8 @@ def product(product_req: ProductPostRequest) -> Product:
     )
 
  """
+
+
 @pytest.fixture(scope="function")
 def product_orm(product: Product) -> ProductORM:
     return mariadb_mapper.map_from_domain(product)

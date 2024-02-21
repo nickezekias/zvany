@@ -8,30 +8,44 @@ from jose import jwt
 from pydantic import ValidationError
 
 from src.app.api.api_v1.config import Settings
-from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_repository import ProductAttributeMariaDbRepository
-from src.app.api.api_v1.product.adapter.repository.product_mariadb_repository import ProductMariaDbRepository
+from src.app.api.api_v1.product.adapter.repository.product_attribute_mariadb_repository import (
+    ProductAttributeMariaDbRepository,
+)
+from src.app.api.api_v1.product.adapter.repository.product_category_mariadb_repository import (
+    ProductCategoryMariaDbRepository,
+)
+from src.app.api.api_v1.product.adapter.repository.product_mariadb_repository import (
+    ProductMariaDbRepository,
+)
 from src.app.config import settings as app_settings
 from src.app.core.authenticator import Authenticator
 from src.app.core.util.crypto import Crypto
 from src.app.db.session import SessionLocal
 
-from src.domain.account.user import User;
-from src.domain.account.i_account_presenter import IAccountPresenter;
-from src.domain.profile.i_profile_presenter import IProfilePresenter;
+from src.domain.account.user import User
+from src.domain.account.i_account_presenter import IAccountPresenter
+from src.domain.profile.i_profile_presenter import IProfilePresenter
 
-from src.app.api.api_v1.account.adapter.repository.account_mariadb_repository import AccountMariaDbRepository
-from src.app.api.api_v1.account.adapter.presenter.account_presenter import AccountPresenter
-from src.app.api.api_v1.profile.adapter.presenter.profile_presenter import ProfilePresenter
+from src.app.api.api_v1.account.adapter.repository.account_mariadb_repository import (
+    AccountMariaDbRepository,
+)
+from src.app.api.api_v1.account.adapter.presenter.account_presenter import (
+    AccountPresenter,
+)
+from src.app.api.api_v1.profile.adapter.presenter.profile_presenter import (
+    ProfilePresenter,
+)
+
 
 @lru_cache()
 def get_settings():
     return Settings()
 
-reusable_oauth2 = OAuth2PasswordBearer(
-    tokenUrl=f"{app_settings.API_V1_STR}/login"
-)
+
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{app_settings.API_V1_STR}/login")
 account_presenter: IAccountPresenter = AccountPresenter()
 profile_presenter: IProfilePresenter = ProfilePresenter()
+
 
 def get_db() -> Generator:
     try:
@@ -41,18 +55,26 @@ def get_db() -> Generator:
     finally:
         db.close()
 
+
 def get_account_mariadb_repository(db=Depends(get_db)):
     return AccountMariaDbRepository(db)
+
 
 def get_product_mariadb_repository(db=Depends(get_db)):
     return ProductMariaDbRepository(db)
 
+
 def get_product_attribute_mariadb_repository(db=Depends(get_db)):
     return ProductAttributeMariaDbRepository(db)
 
+
+def get_product_category_mariadb_repository(db=Depends(get_db)):
+    return ProductCategoryMariaDbRepository(db)
+
+
 def get_current_user(
-    repository: AccountMariaDbRepository=Depends(get_account_mariadb_repository),
-    token=Depends(reusable_oauth2)
+    repository: AccountMariaDbRepository = Depends(get_account_mariadb_repository),
+    token=Depends(reusable_oauth2),
 ) -> User | None:
     try:
         payload = Crypto.verify_token(token=token)
@@ -68,10 +90,12 @@ def get_current_user(
     else:
         return account_presenter.output_error_invalid_auth_token()
 
-def get_current_active_user(current_user: User=Depends(get_current_user)) -> User:
+
+def get_current_active_user(current_user: User = Depends(get_current_user)) -> User:
     if not current_user.active():
         return account_presenter.output_error_inactive_account()
     return profile_presenter.output_view_current_user(current_user)
+
 
 def get_authenticator():
     return Authenticator(Crypto)
