@@ -9,6 +9,12 @@ from src.app.api.api_v1.product.adapter.presenter.product_attribute_json_mapper 
 from src.app.api.api_v1.product.adapter.presenter.product_attribute_presenter import (
     ProductAttributePresenter,
 )
+from src.app.api.api_v1.product.adapter.presenter.product_category_json_mapper import (
+    ProductCategoryJsonMapper,
+)
+from src.app.api.api_v1.product.adapter.presenter.product_category_presenter import (
+    ProductCategoryPresenter,
+)
 from src.app.api.api_v1.product.adapter.presenter.product_json_mapper import (
     ProductJsonMapper,
 )
@@ -18,11 +24,17 @@ from src.app.api.api_v1.product.adapter.presenter.product_presenter import (
 from src.app.api.api_v1.product.adapter.request.product_attribute_request import (
     ProductAttributeRequest,
 )
+from src.app.api.api_v1.product.adapter.request.product_category_request import (
+    ProductCategoryRequest,
+)
 from src.app.api.api_v1.product.adapter.request.product_request import (
     ProductPostRequest,
 )
 from src.app.api.api_v1.product.adapter.response.product_attribute_response import (
     ProductAttributeResponse,
+)
+from src.app.api.api_v1.product.adapter.response.product_category_response import (
+    ProductCategoryResponse,
 )
 
 from src.app.api.api_v1.product.adapter.response.product_response import (
@@ -36,6 +48,9 @@ from src.app.api.api_v1.product.use_case.attributes.get_all_product_attributes i
 )
 from src.app.api.api_v1.product.use_case.attributes.update_product_attribute import (
     UpdateProductAttribute,
+)
+from src.app.api.api_v1.product.use_case.categories.create_product_category import (
+    CreateProductCategory,
 )
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
 from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
@@ -51,12 +66,15 @@ from src.domain.product.i_product_attribute_repository import (
 )
 from src.domain.base.mapper import Mapper
 from src.domain.product.i_product_attribute_presenter import IProductAttributePresenter
+from src.domain.product.i_product_category_presenter import IProductCategoryPresenter
+from src.domain.product.i_product_category_repository import IProductCategoryRepository
 from src.domain.product.i_product_presenter import IProductPresenter
 from src.domain.product.i_product_repository import IProductRepository
 
 import sqlalchemy as sa
 
 from src.domain.product.product_attribute import ProductAttribute
+from src.domain.product.product_category import ProductCategory
 
 router = APIRouter(tags=["product"])
 
@@ -171,3 +189,31 @@ async def delete_attribute(
 ) -> dict | None:
     presenter: IProductAttributePresenter = ProductAttributePresenter()
     return await DeleteProductAttribute(repository, presenter).execute({"id": id})
+
+
+"""
+
+************************** PRODUCT CATEGORIES *****************************
+
+"""
+
+
+@router.post(
+    "/categories", response_model=ProductCategoryResponse | None, status_code=201
+)
+async def create_category(
+    product_cat_req: ProductCategoryRequest,
+    repository: IProductCategoryRepository = Depends(
+        deps.get_product_category_mariadb_repository
+    ),
+) -> ProductCategoryResponse | None:
+    presenter: IProductCategoryPresenter = ProductCategoryPresenter()
+    mapper: Mapper = ProductCategoryJsonMapper()
+    try:
+        product_cat: ProductCategory = mapper.map_to_domain(product_cat_req)
+    except ValueError as e:
+        return presenter.output_error_domain_validation(str(e))
+
+    return await CreateProductCategory(repository, presenter).execute(
+        {"product_category": product_cat}
+    )
