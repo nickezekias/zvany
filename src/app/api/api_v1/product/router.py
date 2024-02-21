@@ -55,6 +55,9 @@ from src.app.api.api_v1.product.use_case.categories.create_product_category impo
 from src.app.api.api_v1.product.use_case.categories.get_product_category import (
     GetProductCategory,
 )
+from src.app.api.api_v1.product.use_case.categories.update_product_category import (
+    UpdateProductCategory,
+)
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
 from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
     CreateProductAttribute,
@@ -233,3 +236,25 @@ async def get_category(
 ) -> ProductCategoryResponse | None:
     presenter: IProductCategoryPresenter = ProductCategoryPresenter()
     return await GetProductCategory(repository, presenter).execute({"id": id})
+
+
+@router.put(
+    "/categories", response_model=ProductCategoryResponse | None, status_code=200
+)
+async def update_category(
+    product_cat_req: ProductCategoryRequest,
+    repository: IProductCategoryRepository = Depends(
+        deps.get_product_category_mariadb_repository
+    ),
+) -> ProductCategoryResponse | None:
+    presenter: IProductCategoryPresenter = ProductCategoryPresenter()
+    mapper: Mapper = ProductCategoryJsonMapper()
+
+    try:
+        product_cat: ProductCategory = mapper.map_to_domain(product_cat_req)
+    except ValueError as e:
+        return presenter.output_error_domain_validation(str(e))
+
+    return await UpdateProductCategory(repository, presenter).execute(
+        {"product_category": product_cat}
+    )
