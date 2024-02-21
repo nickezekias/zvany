@@ -52,6 +52,9 @@ from src.app.api.api_v1.product.use_case.attributes.update_product_attribute imp
 from src.app.api.api_v1.product.use_case.categories.create_product_category import (
     CreateProductCategory,
 )
+from src.app.api.api_v1.product.use_case.categories.get_product_category import (
+    GetProductCategory,
+)
 from src.app.api.api_v1.product.use_case.create_product import CreateProduct
 from src.app.api.api_v1.product.use_case.attributes.create_product_attribute import (
     CreateProductAttribute,
@@ -217,3 +220,16 @@ async def create_category(
     return await CreateProductCategory(repository, presenter).execute(
         {"product_category": product_cat}
     )
+
+
+@router.get(
+    "/categories/{id}", response_model=ProductCategoryResponse | None, status_code=200
+)
+async def get_category(
+    id: str,
+    repository: IProductCategoryRepository = Depends(
+        deps.get_product_category_mariadb_repository
+    ),
+) -> ProductCategoryResponse | None:
+    presenter: IProductCategoryPresenter = ProductCategoryPresenter()
+    return await GetProductCategory(repository, presenter).execute({"id": id})
