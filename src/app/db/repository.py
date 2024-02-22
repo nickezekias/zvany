@@ -1,10 +1,6 @@
 from typing import Generic, TypeVar
 from src.domain.base.i_repository import IRepository
 from src.domain.base.mapper import Mapper
-
-from src.app.db.base_class import Base as BaseORM
-
-
 import sqlalchemy as sa
 from sqlalchemy.orm import Session
 from loguru import logger
@@ -12,7 +8,6 @@ from loguru import logger
 TEntity = TypeVar("TEntity")
 ORMEntity = TypeVar("ORMEntity")
 DbContext = TypeVar("DbContext")
-TQuery = TypeVar("TQuery")
 
 
 class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
@@ -32,10 +27,8 @@ class Repository(Generic[ORMEntity, TEntity], IRepository[ORMEntity, TEntity]):
         entities = self.mapper.map_to_domain_list(orms)
         return entities
 
-    def find(self, query: TQuery) -> list[TEntity]:
-        orms: list[ORMEntity] = self.db.query.filter(query).all()
-        entities = self.mapper.map_to_domain_list(orms)
-        return entities
+    def find(self, query: dict) -> list[TEntity]:
+        pass
 
     def add(self, entity: TEntity) -> None:
         orm = self.mapper.map_from_domain(entity)

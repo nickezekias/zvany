@@ -3,7 +3,6 @@ from typing import Generic, TypeVar
 
 TEntity = TypeVar("TEntity")
 ORMEntity = TypeVar("ORMEntity")
-TQuery = TypeVar("TQuery")
 
 
 class IRepository(ABC, Generic[ORMEntity, TEntity]):
@@ -16,7 +15,7 @@ class IRepository(ABC, Generic[ORMEntity, TEntity]):
         pass
 
     @abstractmethod
-    def find(self, query: TQuery) -> list[TEntity]:
+    def find(self, query: dict) -> list[TEntity]:
         pass
 
     @abstractmethod
