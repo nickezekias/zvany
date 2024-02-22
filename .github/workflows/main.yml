@@ -17,3 +17,5 @@ jobs:
         server: ftp.zvany.com
         username: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
+        protocol: ftps
+        port: 21
