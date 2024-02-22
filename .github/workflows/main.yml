@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: 📂 Sync files
-      uses: kevinpainchaud/simple-ftp-deploy-action@1.2.1
+      uses: kevinpainchaud/simple-ftp-deploy-action@v1.2.1
       with:
         ftp_host: ftp.zvany.com
         ftp_username: ${{ secrets.ftp_username }}
