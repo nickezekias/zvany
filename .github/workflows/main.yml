@@ -12,7 +12,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: 📂 Sync files
-      uses: airzxf/ftp-deployment-action@latest
+      uses: airvzxf/ftp-deployment-action@latest
       with:
         server: ftp.zvany.com
         user: ${{ secrets.ftp_username }}
