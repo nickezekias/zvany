@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from src.app.api.api_v1.product.adapter.repository.product_category_mariadb_mapper import (
     ProductCategoryMariaDbMapper,
@@ -43,6 +44,15 @@ class ProductCategoryMariaDbRepository(
 
     def get_all(self) -> list[ProductCategory]:
         orm_list: list[ProductCategoryORM] = self.db.query(ProductCategoryORM).all()
+        return self.mapper.map_to_domain_list(orm_list)
+
+    def find(self, query: dict) -> list[ProductCategory]:
+        orm_list: list[ProductCategoryORM] = list(self.db.scalars(
+            select(ProductCategoryORM).where(
+                ProductCategoryORM.name.like(f'%{query["name"]}%')
+            )
+        ).all())
+
         return self.mapper.map_to_domain_list(orm_list)
 
     def update(self, entity: ProductCategory) -> ProductCategory | None:

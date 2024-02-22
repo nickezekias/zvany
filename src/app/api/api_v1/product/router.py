@@ -61,6 +61,9 @@ from src.app.api.api_v1.product.use_case.categories.get_all_product_categories i
 from src.app.api.api_v1.product.use_case.categories.get_product_category import (
     GetProductCategory,
 )
+from src.app.api.api_v1.product.use_case.categories.search_product_category import (
+    SearchProductCategory,
+)
 from src.app.api.api_v1.product.use_case.categories.update_product_category import (
     UpdateProductCategory,
 )
@@ -287,3 +290,20 @@ async def delete_category(
 ) -> dict | None:
     presenter: IProductCategoryPresenter = ProductCategoryPresenter()
     return await DeleteProductCategory(repository, presenter).execute({"id": id})
+
+
+@router.get(
+    "/categories/search/{name}",
+    response_model=list[ProductCategoryResponse] | None,
+    status_code=200,
+)
+async def search_category(
+    name: str,
+    repository: IProductCategoryRepository = Depends(
+        deps.get_product_category_mariadb_repository
+    ),
+) -> list[ProductCategoryResponse] | None:
+    presenter: IProductCategoryPresenter = ProductCategoryPresenter()
+    return await SearchProductCategory(repository, presenter).execute(
+        {"query": {"name": name}}
+    )
