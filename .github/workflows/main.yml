@@ -12,9 +12,9 @@ jobs:
       uses: actions/checkout@v4
     
     - name: 📂 Sync files
-      uses: airvzxf/ftp-deployment-action@latest
+      uses: kevinpainchaud/simple-ftp-deploy-action@1.2.1
       with:
-        server: ftp.zvany.com
-        user: ${{ secrets.ftp_username }}
-        password: ${{ secrets.ftp_password }}
-        ftp_ssl_allow: true
+        ftp_host: ftp.zvany.com
+        ftp_username: ${{ secrets.ftp_username }}
+        ftp_password: ${{ secrets.ftp_password }}
+        exclude: "'^tests/"
