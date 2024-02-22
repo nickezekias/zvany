@@ -9,13 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 🚚 Get latest code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: airzxf/ftp-deployment-action@latest
       with:
         server: ftp.zvany.com
-        username: ${{ secrets.ftp_username }}
+        user: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
-        protocol: ftps
-        port: 21
+        ftp_sll_allow: true
