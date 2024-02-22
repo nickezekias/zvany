@@ -55,6 +55,9 @@ from src.app.api.api_v1.product.use_case.categories.create_product_category impo
 from src.app.api.api_v1.product.use_case.categories.delete_product_category import (
     DeleteProductCategory,
 )
+from src.app.api.api_v1.product.use_case.categories.get_all_product_categories import (
+    GetAllProductCategories,
+)
 from src.app.api.api_v1.product.use_case.categories.get_product_category import (
     GetProductCategory,
 )
@@ -158,7 +161,7 @@ async def get_attribute(
 @router.get(
     "/attributes", response_model=list[ProductAttributeResponse], status_code=200
 )
-async def get_attributes(
+async def get_all_attributes(
     repository: IProductAttributeRepository = Depends(
         deps.get_product_attribute_mariadb_repository
     ),
@@ -239,6 +242,18 @@ async def get_category(
 ) -> ProductCategoryResponse | None:
     presenter: IProductCategoryPresenter = ProductCategoryPresenter()
     return await GetProductCategory(repository, presenter).execute({"id": id})
+
+
+@router.get(
+    "/categories", response_model=list[ProductCategoryResponse], status_code=200
+)
+async def get_all_categories(
+    repository: IProductCategoryRepository = Depends(
+        deps.get_product_category_mariadb_repository
+    ),
+) -> list[ProductCategoryResponse]:
+    presenter: IProductCategoryPresenter = ProductCategoryPresenter()
+    return await GetAllProductCategories(repository, presenter).execute({})
 
 
 @router.put(
