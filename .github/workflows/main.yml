@@ -17,4 +17,4 @@ jobs:
         server: ftp.zvany.com
         user: ${{ secrets.ftp_username }}
         password: ${{ secrets.ftp_password }}
-        ftp_sll_allow: true
+        ftp_ssl_allow: true
