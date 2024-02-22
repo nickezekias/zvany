@@ -20,9 +20,9 @@ class GetProductCategory(IUseCase):
         self.presenter = presenter
 
     async def execute(self, payload: dict[str, str]) -> ProductCategoryResponse | None:
-        product_attr: ProductCategory = self.repository.get(id=payload["id"])
-        if product_attr:
-            return self.presenter.output(product_attr)
+        product_category: ProductCategory = self.repository.get(id=payload["id"])
+        if product_category:
+            return self.presenter.output(product_category)
         return self.presenter.output_error_object_not_found(
             "ProductCategory.get.error.objectWithIdNotFound"
         )
