@@ -47,11 +47,13 @@ class ProductCategoryMariaDbRepository(
         return self.mapper.map_to_domain_list(orm_list)
 
     def find(self, query: dict) -> list[ProductCategory]:
-        orm_list: list[ProductCategoryORM] = list(self.db.scalars(
-            select(ProductCategoryORM).where(
-                ProductCategoryORM.name.like(f'%{query["name"]}%')
-            )
-        ).all())
+        orm_list: list[ProductCategoryORM] = list(
+            self.db.scalars(
+                select(ProductCategoryORM).where(
+                    ProductCategoryORM.name.like(f'%{query["name"]}%')
+                )
+            ).all()
+        )
 
         return self.mapper.map_to_domain_list(orm_list)
 
