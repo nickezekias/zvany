@@ -28,6 +28,14 @@ class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
             created_at = now,
             updated_at = now,
         )
+    
+    def map_to_domain_list(self, params: list[UserPostRequest]) -> list[User]:
+        entities: list[User] = []
+
+        for param in params:
+            entities.append(self.map_to_domain(param))
+
+        return entities
 
     def map_from_domain(self, param: User) -> UserPostResponse:
         email_verified_at = param.email_verified_at
@@ -54,3 +62,11 @@ class AccountJsonMapper(Mapper[UserPostRequest, User | UserPostResponse]):
             created_at = DateTimeUtil.date_to_string(param.created_at),
             updated_at = DateTimeUtil.date_to_string(param.updated_at)
         )
+    
+    def map_from_domain_list(self, params: list[User]) -> list[UserPostResponse]:
+        res_list: list[UserPostResponse] = []
+
+        for param in params:
+            res_list.append(self.map_from_domain(param))
+
+        return res_list
